@@ -32,7 +32,7 @@ def load_trades(file_path):
         
     return trades_df[TRADE_COLUMNS]
 
-def save_trades(file_path, trades_df):
+def save_trades(trades_df, file_path):
     """
     Saves the trades DataFrame to a CSV file.
     """
