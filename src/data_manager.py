@@ -89,5 +89,6 @@ def add_trade(
 
     return updated_trades_df
 
-def delete_
+def delete_trade(trades_df, trade_id):
+    """"""
 
