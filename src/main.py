@@ -23,6 +23,11 @@ trades_df = load_trades(TRADES_FILE)
 st.subheader("Saved Trades")
 st.dataframe(trades_df)
 
+if not trades_df.empty:
+    st.subheader("Delete a Trade")
+
+
+
 st.subheader("Add a New Trade")
 
 with st.form("add_trade_form"):
