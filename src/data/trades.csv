@@ -1,5 +1,1 @@
 trade_id,ticker,shares,buy_price,buy_date,sell_price,sell_date,tag,thesis,conviction,target_price,status
-1,AAPL,4.0,160.0,2026-04-26,200.0,2026-05-05,momentum play,Because i want to,Low,240.0,Open
-2,,0.0,0.0,2026-04-26,0.0,2026-04-26,,,Low,0.0,Open
-3,AAPL,0.0,0.0,2026-04-26,0.0,2026-04-26,,,Low,0.0,Closed
-4,AAPL,0.0,0.0,2026-04-26,0.0,2026-04-26,,,Low,0.0,Closed
