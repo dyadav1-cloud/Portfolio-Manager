@@ -114,4 +114,4 @@ def edit_trades(
     """
     Edit an existing trade using its trade ID.
     """
-    trades_df = trades_df[trades_df[]]
+    trades_df = trades_df[trades_df["trade_id"]]
