@@ -95,7 +95,7 @@ if not trades_df.empty:
     st.subheader("Edit a Trade")
 
     edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
-    selected_trade_id
+    selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
 
 
 
