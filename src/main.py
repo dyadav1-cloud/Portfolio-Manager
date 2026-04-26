@@ -1,8 +1,4 @@
 import streamlit as st
-
-import numpy as np
-import matplotlib.pyplot as plt
-import yfinance as yf
 import os
 from data_manager import load_trades, save_trades, add_trade, delete_trade
 
