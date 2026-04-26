@@ -27,7 +27,8 @@ else:
     trades_df["buy_price"] = pd.to_numeric(trades_df["buy_price"], errors="coerce").fillna(0)
 
     total_trades = len(trades_df)
-    uni
+    unique_tickers = trades_df["ticker"].nunique()
+    total_cost_basis = (trades_df["buy_price"] * trades_df["shares"]).sum()
 
 
 st.subheader("Add a New Trade")
