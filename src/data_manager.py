@@ -135,3 +135,5 @@ def edit_trades(
     trades_df.loc[row_index, "status"] = status
 
     return trades_df
+
+
