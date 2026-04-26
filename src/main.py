@@ -68,7 +68,7 @@ with st.form("add_trade_form"):
                 target_price=target_price,
                 status=status
             )
-            save_trades(TRADES_FILE, trades_df)
+            save_trades(trades_df, TRADES_FILE)
             st.success("Trade added successfully!")
             st.rerun()
 
