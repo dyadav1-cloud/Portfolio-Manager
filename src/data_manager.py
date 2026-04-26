@@ -111,4 +111,7 @@ def edit_trades(
         target_price,
         status
 ):
+    """
+    Edit an existing trade using its trade ID.
+    """
     
