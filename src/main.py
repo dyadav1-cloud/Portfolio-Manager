@@ -27,7 +27,10 @@ if not trades_df.empty:
     st.subheader("Delete a Trade")
 
     trade_ids = trades_df["trade_id"].tolist()
-    selected_trade_id = st.select
+    selected_trade_id = st.selectbox("Select Trade ID to Delete", trade_ids)
+
+    if st.button("Delete Selected Trade"):
+        
 
 
 st.subheader("Add a New Trade")
