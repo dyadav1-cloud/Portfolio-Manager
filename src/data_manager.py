@@ -124,5 +124,6 @@ def edit_trades(
 
     trades_df.loc[row_index, "ticker"] = ticker.upper().strip()
     trades_df.loc[row_index, "shares"] = shares
-    tra
+    trades_df.loc[row_index, "buy_price"] = buy_price
+    trades_df
 
