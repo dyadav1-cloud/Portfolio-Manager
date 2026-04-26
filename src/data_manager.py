@@ -117,4 +117,6 @@ def edit_trades(
     """
     trades_df = trades_df[trades_df["trade_id"] == trade_id].index
 
-    
+    if len(trade_index) == 0:
+        return trades_df
+
