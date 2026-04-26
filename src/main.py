@@ -27,3 +27,4 @@ st.subheader("Add a New Trade")
 
 with st.form("add_trade_form"):
     ticker = st.text_input("Ticker Symbol", placeholder="AAPL")
+    
