@@ -23,7 +23,11 @@ if trades_df.empty:
     total_cost_basis = 0
 
 else:
-    
+    trades_df["shares"] = pd.to_numeric(trades_df["shares"], errors="coerce").fillna(0)
+    trades_df["buy_price"] = pd.to_numeric(trades_df["buy_price"], errors="coerce").fillna(0)
+
+    total
+
 
 st.subheader("Add a New Trade")
 
