@@ -34,8 +34,6 @@ if not trades_df.empty:
         save_trades(trades_df, TRADES_FILE)
         st.warning("Trade deleted.")
         st.rerun()
-        
-
 
 st.subheader("Add a New Trade")
 
