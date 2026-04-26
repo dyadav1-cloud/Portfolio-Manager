@@ -17,6 +17,14 @@ st.write("Trade journal and performance dashboard.")
 
 trades_df = load_trades(TRADES_FILE)
 
+if trades_df.empty:
+    total_trades = 0
+    unique_tickers = 0
+    total_cost_basis = 0
+
+else:
+    
+
 st.subheader("Add a New Trade")
 
 with st.form("add_trade_form"):
