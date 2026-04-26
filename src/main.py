@@ -33,6 +33,7 @@ if not trades_df.empty:
         trades_df = delete_trade(trades_df, selected_trade_id)
         save_trades(trades_df, TRADES_FILE)
         st.warning("Trade deleted.")
+        st.rerun()
         
 
 
