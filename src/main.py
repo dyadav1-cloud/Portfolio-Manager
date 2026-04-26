@@ -97,6 +97,8 @@ if not trades_df.empty:
     edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
     selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
 
+    
+
 
 
 if not trades_df.empty:
