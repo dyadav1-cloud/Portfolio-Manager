@@ -27,6 +27,7 @@ st.subheader("Add a New Trade")
 
 with st.form("add_trade_form"):
     ticker = st.text_input("Ticker Symbol", placeholder="AAPL")
+    shares = st.number_input("Shares", min_value=0.0, step=1.0)
     buy_price = st.number_input("Buy Price", min_value=0.0, step=0.01)
     buy_date = st.date_input("Buy Date")
 
