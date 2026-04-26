@@ -32,7 +32,9 @@ else:
 
 col1, col2, col3 = st.columns(3)
 
-
+col1.metric("Total Trades", total_trades)
+col2.metric("Unique Tickers", unique_tickers)
+col3.metric("Total Cost Basis", total_cost_basis)
 
 st.subheader("Add a New Trade")
 
