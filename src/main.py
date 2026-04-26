@@ -26,7 +26,15 @@ st.dataframe(trades_df)
 if not trades_df.empty:
     st.subheader("Delete a Trade")
 
+trade_ids = trades_df["trade_id"].tolist()
 
+selected_trade_id = st.selectbox("Select Trade ID", trade_ids)
+
+if st.button("Delete Trade"):
+    trades_df = delete_trade(trades_df, selected_trade_id)
+    save_trades(TRADES_FILE, trades_df)
+    st.success(f"Trade {selected_trade_id} deleted successfully!")
+    st.experimental_rerun()
 
 st.subheader("Add a New Trade")
 
