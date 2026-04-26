@@ -73,3 +73,4 @@ with st.form("add_trade_form"):
             save_trades(TRADES_FILE, trades_df)
             st.success("Trade added successfully!")
             st.rerun()
+            
