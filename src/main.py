@@ -52,7 +52,7 @@ with st.form("add_trade_form"):
         elif buy_price <= 0:
             st.error("Please enter a valid buy price. Buy price must be greater than 0.")
 
-        elif statu
+        elif status == "closed"
 
         trades_df = add_trade(
             trades_df=trades_df,
