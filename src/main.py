@@ -43,5 +43,18 @@ with st.form("add_trade_form"):
 
     if submitted:
         trades_df = add_trade(
-            
+            trades_df,
+            ticker,
+            shares,
+            buy_price,
+            buy_date,
+            sell_price,
+            sell_date,
+            tag,
+            thesis,
+            conviction,
+            target_price,
+            status
         )
+        save_trades(TRADES_FILE, trades_df)
+        st.success("Trade added successfully!")
