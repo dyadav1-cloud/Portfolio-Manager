@@ -49,7 +49,8 @@ with st.form("add_trade_form"):
         elif shares <= 0:
             st.error("Please enter a valid number of shares. Shares must be greater than 0.")
 
-        elif
+        elif buy_price <= 0:
+            st.error("Please enter a valid buy price. Buy price must be greater than 0.")
 
         trades_df = add_trade(
             trades_df=trades_df,
