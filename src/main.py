@@ -56,13 +56,7 @@ with st.form("add_trade_form"):
             target_price=target_price,
             status=status
         )
-            sell_date,
-            tag,
-            thesis,
-            conviction,
-            target_price,
-            status
-        )
         save_trades(TRADES_FILE, trades_df)
         st.success("Trade added successfully!")
         st.rerun()
+
