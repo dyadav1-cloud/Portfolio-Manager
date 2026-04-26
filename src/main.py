@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import yfinance as yf
 import os
-from data_manager import load_trades, save_trades, add_trade
+from data_manager import load_trades, save_trades, add_trade, delete_trade
 
 # This block helps me move my file without having to change names each time.
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -73,4 +73,4 @@ with st.form("add_trade_form"):
             save_trades(TRADES_FILE, trades_df)
             st.success("Trade added successfully!")
             st.rerun()
-            
+
