@@ -99,6 +99,7 @@ def delete_trade(trades_df, trade_id):
 
 def edit_trades(
         trades_df,
+        trade_id,
         ticker,
         shares,
         buy_price,
