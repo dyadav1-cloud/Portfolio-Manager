@@ -27,7 +27,7 @@ if not trades_df.empty:
     st.subheader("Delete a Trade")
 
     trade_ids = trades_df["trade_id"].tolist()
-    
+    selected_trade_id = st.select
 
 
 st.subheader("Add a New Trade")
