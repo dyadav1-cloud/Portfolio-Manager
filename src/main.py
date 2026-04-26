@@ -91,6 +91,8 @@ with st.form("add_trade_form"):
 st.subheader("Saved Trades")
 st.dataframe(trades_df)
 
+
+
 if not trades_df.empty:
     st.subheader("Delete a Trade")
 
