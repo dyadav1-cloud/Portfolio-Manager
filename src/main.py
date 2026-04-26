@@ -43,12 +43,19 @@ with st.form("add_trade_form"):
 
     if submitted:
         trades_df = add_trade(
-            trades_df,
-            ticker,
-            shares,
-            buy_price,
-            buy_date,
-            sell_price,
+            trades_df=trades_df,
+            ticker=ticker,
+            shares=shares,
+            buy_price=buy_price,
+            buy_date=buy_date,
+            sell_price=sell_price,
+            sell_date=sell_date,
+            tag=tag,
+            thesis=thesis,
+            conviction=conviction,
+            target_price=target_price,
+            status=status
+        )
             sell_date,
             tag,
             thesis,
