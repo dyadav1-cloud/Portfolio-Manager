@@ -125,5 +125,13 @@ def edit_trades(
     trades_df.loc[row_index, "ticker"] = ticker.upper().strip()
     trades_df.loc[row_index, "shares"] = shares
     trades_df.loc[row_index, "buy_price"] = buy_price
-    trades_df
+    trades_df.loc[row_index, "buy_date"] = str(buy_date)
+    trades_df.loc[row_index, "sell_price"] = sell_price
+    trades_df.loc[row_index, "sell_date"] = str(sell_date
+    trades_df.loc[row_index, "tag"] = tag
+    trades_df.loc[row_index, "thesis"] = thesis
+    trades_df.loc[row_index, "conviction"] = conviction
+    trades_df.loc[row_index, "target_price"] = target_price
+    trades_df.loc[row_index, "status"] = status
 
+    return trades_df
