@@ -93,5 +93,5 @@ def delete_trade(trades_df, trade_id):
     """
     Delete a trade from the trades DataFrame by its trade ID.
     """
-    
+    updated_trades_df = trades_df
 
