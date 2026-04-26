@@ -33,5 +33,6 @@ with st.form("add_trade_form"):
     sell_price = st.number_input("Sell Price", min_value=0.0, step=0.01)
     sell_date = st.date_input("Sell Date")
 
-    
+    tag = st.text_input("Tag", placeholder="momentum play")
+    thesis = st.text_area("Investment Thesis", placeholder="Why did you enter this trade?")
 
