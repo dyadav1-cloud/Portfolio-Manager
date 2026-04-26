@@ -17,7 +17,7 @@ TRADES_FILE = get_data_path("trades.csv")
 
 st.title("Portfolio Manager")
 st.write("Trade journal and performance dashboard.")
-st.write("Trades file path:", TRADES_FILE)
+
 
 trades_df = load_trades(TRADES_FILE)
 st.subheader("Saved Trades")
