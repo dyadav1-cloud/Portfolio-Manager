@@ -55,21 +55,21 @@ with st.form("add_trade_form"):
         elif status == "Closed" and sell_price <= 0:
             st.error("Please enter a valid sell price. Sell price must be greater than 0 for closed trades.")
 
-        trades_df = add_trade(
-            trades_df=trades_df,
-            ticker=ticker,
-            shares=shares,
-            buy_price=buy_price,
-            buy_date=buy_date,
-            sell_price=sell_price,
-            sell_date=sell_date,
-            tag=tag,
-            thesis=thesis,
-            conviction=conviction,
-            target_price=target_price,
-            status=status
-        )
-        save_trades(TRADES_FILE, trades_df)
-        st.success("Trade added successfully!")
-        st.rerun()
-
+        else:
+            trades_df = add_trade(
+                trades_df=trades_df,
+                ticker=ticker,
+                shares=shares,
+                buy_price=buy_price,
+                buy_date=buy_date,
+                sell_price=sell_price,
+                sell_date=sell_date,
+                tag=tag,
+                thesis=thesis,
+                conviction=conviction,
+                target_price=target_price,
+                status=status
+            )
+            save_trades(TRADES_FILE, trades_df)
+            st.success("Trade added successfully!")
+            st.rerun()
