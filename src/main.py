@@ -46,9 +46,9 @@ with st.form("add_trade_form"):
         if ticker.strip() == "":
             st.error("Please enter a ticker symbol.")
 
-        if shares <= 0:
+        elif shares <= 0:
             st.error("Please enter a valid number of shares.")
-    
+
         trades_df = add_trade(
             trades_df=trades_df,
             ticker=ticker,
