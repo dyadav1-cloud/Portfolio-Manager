@@ -30,6 +30,7 @@ if not trades_df.empty:
     selected_trade_id = st.selectbox("Select Trade ID to Delete", trade_ids)
 
     if st.button("Delete Selected Trade"):
+        trades_df = delete_trade(trades_df, selected_trade_id)
         
 
 
