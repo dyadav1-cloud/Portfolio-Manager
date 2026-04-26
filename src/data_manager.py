@@ -120,5 +120,8 @@ def edit_trades(
     if len(trade_index) == 0:
         return trades_df
     
-    
+    row_index = trade_index[0]
+
+    trades_df.loc[row_index, "ticker"] = ticker.upper().strip()
+    tra
 
