@@ -43,6 +43,10 @@ with st.form("add_trade_form"):
     submitted = st.form_submit_button("Save Trade")
 
     if submitted:
+        if ticker.strip() == "":
+            st.error("Please enter a ticker symbol.")
+
+        
         trades_df = add_trade(
             trades_df=trades_df,
             ticker=ticker,
