@@ -97,4 +97,18 @@ def delete_trade(trades_df, trade_id):
 
     return updated_trades_df.reset_index(drop=True)
 
-def edit_trades()
+def edit_trades(
+        trades_df,
+        ticker,
+        shares,
+        buy_price,
+        buy_date,
+        sell_price,
+        sell_date,
+        tag,
+        thesis,
+        conviction,
+        target_price,
+        status
+):
+    
