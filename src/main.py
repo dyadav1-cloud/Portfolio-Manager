@@ -39,4 +39,7 @@ with st.form("add_trade_form"):
     target_price = st.number_input("Target Price", min_value=0.0, step=0.01)
     status = st.selectbox("Status", ["Open", "Closed"])
 
-    
+    submitted = st.form_submit_button("Save Trade")
+
+    if submitted:
+        
