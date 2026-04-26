@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import pandas as pd
 from data_manager import load_trades, save_trades, add_trade, delete_trade
 
 # This block helps me move my file without having to change names each time.
