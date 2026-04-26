@@ -1,1 +1,2 @@
 trade_id,ticker,shares,buy_price,buy_date,sell_price,sell_date,tag,thesis,conviction,target_price,status
+1,AAPL,1.0,100.0,2026-04-26,120.0,2026-04-26,mom,tst,Low,200.0,Open
