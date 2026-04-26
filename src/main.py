@@ -35,4 +35,8 @@ with st.form("add_trade_form"):
 
     tag = st.text_input("Tag", placeholder="momentum play")
     thesis = st.text_area("Investment Thesis", placeholder="Why did you enter this trade?")
+    conviction = st.selectbox("Conviction Level", ["Low", "Medium", "High"])
+    target_price = st.number_input("Target Price", min_value=0.0, step=0.01)
+    status = st.selectbox("Status", ["Open", "Closed"])
 
+    
