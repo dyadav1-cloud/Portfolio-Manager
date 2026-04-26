@@ -15,8 +15,6 @@ st.title("Portfolio Manager")
 st.write("Trade journal and performance dashboard.")
 
 
-
-
 trades_df = load_trades(TRADES_FILE)
 
 if trades_df.empty:
@@ -31,6 +29,8 @@ else:
     total_trades = len(trades_df)
     unique_tickers = trades_df["ticker"].nunique()
     total_cost_basis = (trades_df["buy_price"] * trades_df["shares"]).sum()
+
+col1, col2, col3 = st.columns(3)
 
 
 
