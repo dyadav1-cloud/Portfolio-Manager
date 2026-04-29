@@ -10,6 +10,8 @@ def get_data_path(filename: str) -> str:
     '''Returns the path to an asset file, given its filename.'''
     return os.path.join(APP_PATH, "data", filename)
 
+
+
 TRADES_FILE = get_data_path("trades.csv")
 
 st.title("Portfolio Manager")
