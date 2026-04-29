@@ -146,6 +146,15 @@ if not trades_df.empty:
             value=float(selected_trade["target_price"]) if selected_trade["target_price"] != "" else 0.0
         )
 
+        edit_status = st.selectbox(
+            "Edit Status",
+            ["Open", "Closed"],
+            index=["Open", "Closed"].index(selected_trade["status"])
+            if selected_trade["status"] in ["Open", "Closed"] else 0
+        )
+
+        edit_submitted = st.form_submit_button("Save Changes")
+
         
 
 
