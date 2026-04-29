@@ -139,6 +139,16 @@ if not trades_df.empty:
             if selected_trade["conviction"] in ["Low", "Medium", "High"] else 1
         )
 
+        edit_target_price = st.number_input(
+            "Edit Target Price",
+            min_value=0.0,
+            step=0.01,
+            value=float(selected_trade["target_price"]) if selected_trade["target_price"] != "" else 0.0
+        )
+
+        
+
+
 
 
 if not trades_df.empty:
