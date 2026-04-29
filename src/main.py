@@ -97,6 +97,10 @@ if not trades_df.empty:
     edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
     selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
 
+    selected_trade = trades_df[trades_df["trade_id"] == selected_edit_id].iloc[0]
+
+    
+
 if not trades_df.empty:
     st.subheader("Delete a Trade")
 
