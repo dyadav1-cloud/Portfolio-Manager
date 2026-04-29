@@ -102,6 +102,8 @@ if not trades_df.empty:
     with st.form("edit_trade_form"):
         edit_ticker = st.text_input("Edit Ticker", value=str(selected_trade["ticker"]))
         edit_shares = st.number_input(
+            "Edit Shares",
+            
 
 
 if not trades_df.empty:
