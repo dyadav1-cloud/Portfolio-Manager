@@ -124,7 +124,13 @@ if not trades_df.empty:
             value=float(selected_trade["sell_price"]) if selected_trade["sell_price"] != "" else 0.0
         )
 
-        
+        edit_sell_date = st.date_input(
+            "Edit Sell Date",
+            value=pd.to_datetime(selected_trade["sell_date"]) if selected_trade["sell_date"] != "" else pd.Timestamp.today()
+        )
+
+        edit_tag = st.text_input("Edit Tag", value=str(selected_trade["tag"]))
+        edit_thesis = st.text_area("Edit Investment Thesis", value=str(selected_trade["thesis"]))
 
 
 if not trades_df.empty:
