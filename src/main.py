@@ -156,7 +156,21 @@ if not trades_df.empty:
         edit_submitted = st.form_submit_button("Save Changes")
 
         if edit_submitted:
-            
+            if edit_ticker.strip() == "":
+                st.error("Please enter a ticker symbol.")
+
+            elif edit_shares <= 0:
+                st.error("Shares must be greater than zero.")
+
+            elif edit_buy_price <= 0:
+                st.error("Buy price must be greater than zero.")
+
+            elif edit_status == "Closed" and edit_sell_price <= 0:
+                st.error("Closed trades need a sell price.")
+
+            else:
+                
+
 
 
 
