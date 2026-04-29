@@ -189,11 +189,6 @@ if not trades_df.empty:
                 st.rerun()
 
 
-
-
-
-
-
 if not trades_df.empty:
     st.subheader("Delete a Trade")
 
