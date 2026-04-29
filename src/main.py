@@ -155,7 +155,8 @@ if not trades_df.empty:
 
         edit_submitted = st.form_submit_button("Save Changes")
 
-        
+        if edit_submitted:
+            
 
 
 
