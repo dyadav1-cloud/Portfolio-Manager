@@ -204,5 +204,5 @@ if not trades_df.empty:
         st.rerun()
 
 
-and
+name = "drayush"
 
