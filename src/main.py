@@ -108,6 +108,15 @@ if not trades_df.empty:
             value=float(selected_trade["shares"])
         )
 
+        edit_buy_price = st.number_input(
+            "Edit Buy Price",
+            min_value=0.0,
+            step=0.01,
+            value=float(selected_trade["buy_price"])
+        )
+
+        
+
 
 if not trades_df.empty:
     st.subheader("Delete a Trade")
