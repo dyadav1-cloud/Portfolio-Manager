@@ -99,7 +99,10 @@ if not trades_df.empty:
 
     selected_trade = trades_df[trades_df["trade_id"] == selected_edit_id].iloc[0]
 
-    
+    with st.form("edit_trade_form"):
+        edit_ticker = st.text_input("Edit Ticker", value=str(selected_trade["ticker"]))
+        edit_shares = st.number_input(
+
 
 if not trades_df.empty:
     st.subheader("Delete a Trade")
