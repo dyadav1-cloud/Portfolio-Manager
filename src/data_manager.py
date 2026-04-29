@@ -97,7 +97,7 @@ def delete_trade(trades_df, trade_id):
 
     return updated_trades_df.reset_index(drop=True)
 
-def edit_trades(
+def edit_trade(
         trades_df,
         trade_id,
         ticker,
