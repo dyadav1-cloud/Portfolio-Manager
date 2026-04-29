@@ -132,6 +132,14 @@ if not trades_df.empty:
         edit_tag = st.text_input("Edit Tag", value=str(selected_trade["tag"]))
         edit_thesis = st.text_area("Edit Investment Thesis", value=str(selected_trade["thesis"]))
 
+        edit_conviction = st.selectbox(
+            "Edit Conviction Level",
+            ["Low", "Medium", "High"],
+            index=["Low", "Medium", "High"].index(selected_trade["conviction"])
+            if selected_trade["conviction"] in ["Low", "Medium", "High"] else 1
+        )
+
+
 
 if not trades_df.empty:
     st.subheader("Delete a Trade")
