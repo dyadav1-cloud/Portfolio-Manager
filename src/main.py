@@ -204,4 +204,5 @@ if not trades_df.empty:
         st.rerun()
 
 
+a
 
