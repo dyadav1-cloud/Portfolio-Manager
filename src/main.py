@@ -103,7 +103,10 @@ if not trades_df.empty:
         edit_ticker = st.text_input("Edit Ticker", value=str(selected_trade["ticker"]))
         edit_shares = st.number_input(
             "Edit Shares",
-            
+            min_value=0.0,
+            step=1.0,
+            value=float(selected_trade["shares"])
+        )
 
 
 if not trades_df.empty:
