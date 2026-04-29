@@ -175,6 +175,7 @@ if not trades_df.empty:
 
 
 
+
 if not trades_df.empty:
     st.subheader("Delete a Trade")
 
