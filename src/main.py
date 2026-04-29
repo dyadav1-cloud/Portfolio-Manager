@@ -115,6 +115,15 @@ if not trades_df.empty:
             value=float(selected_trade["buy_price"])
         )
 
+        edit_buy_date = st.date_input("Edit Buy Date", value=pd.to_datetime(selected_trade["buy_date"]))
+
+        edit_sell_price = st.number_input(
+            "Edit Sell Price",
+            min_value=0.0,
+            step=0.01,
+            value=float(selected_trade["sell_price"]) if selected_trade["sell_price"] != "" else 0.0
+        )
+
         
 
 
