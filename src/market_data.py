@@ -23,3 +23,5 @@ def get_latest_price(ticker):
         latest_price = stock_data["Close"].dropna().iloc[-1]
         return round(float(latest_price), 2)
     
+    except Exception:
+        
