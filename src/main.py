@@ -51,8 +51,21 @@ else:
     
     position_df = calculate_position_metrics(trades_df, price_df)
 
-    
-)
+    display_columns = [
+        "ticker",
+        "shares",
+        "buy_price",
+        "latest_price",
+        "cost_basis",
+        "current_value",
+        "unrealized_pl",
+        "unrealized_pl_percent",
+        "tag",
+        "conviction",
+        "status"
+    ]
+
+
 
 st.dataframe(price_df, use_container_width=True)
 
