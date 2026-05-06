@@ -70,4 +70,17 @@ def calculate_portfolio_summary(position_df):
     total_current_value = position_df["current_value"].sum()
     total_unrealized_pl = position_df["unrealized_pl"].sum()
 
-    
+    if total_cost_basis == 0:
+        total_unrealized_pl_percent = 0
+
+    else:
+        total_unrealized_pl_percent = (
+            total_unrealized_pl / total_cost_basis
+        ) * 100
+
+    return {
+        "total_cost_basis": total_cost_basis,
+        "total_current_value": total_current_value,
+        "total_unrealized_pl": total_unrealized_pl,
+        "total_unrealized_pl_percent": total_unrealized_pl_percent
+    }
