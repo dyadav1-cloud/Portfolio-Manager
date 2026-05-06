@@ -24,4 +24,4 @@ def get_latest_price(ticker):
         return round(float(latest_price), 2)
     
     except Exception:
-        
+        return None
