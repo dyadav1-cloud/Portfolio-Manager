@@ -5,4 +5,6 @@ import streamlit as st
 @st.cache_data(ttl=300)
 def get_latest_price(ticker):
     """
-    F"""
+    Fetch the latest available closing price for one stock ticker.
+    
+    The ttl="""
