@@ -22,6 +22,8 @@ st.write("Trade journal and performance dashboard.")
 
 
 trades_df = load_trades(TRADES_FILE)
+price_df = pd.DataFrame()
+position_df = pd.DataFrame()
 
 if trades_df.empty:
     total_trades = 0
@@ -260,6 +262,5 @@ if not trades_df.empty:
         save_trades(trades_df, TRADES_FILE)
         st.warning("Trade deleted.")
         st.rerun()
-
 
 

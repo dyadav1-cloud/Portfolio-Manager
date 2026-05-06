@@ -2,6 +2,7 @@ import pandas as pd
 import yfinance as yf
 import streamlit as st
 
+
 @st.cache_data(ttl=300)
 def get_latest_price(ticker):
     """
@@ -36,21 +37,61 @@ def get_latest_price(ticker):
     
     except Exception:
         return None
-    
+
+
+@st.cache_data(ttl=86400)
+def get_company_overview(ticker):
+    """
+    Fetch the company name and business overview for one stock ticker.
+    """
+    default_overview = {
+        "company_name": ticker,
+        "company_overview": "Company overview unavailable."
+    }
+
+    try:
+        ticker_info = yf.Ticker(ticker).get_info()
+
+        if not isinstance(ticker_info, dict) or not ticker_info:
+            return default_overview
+
+        company_name = (
+            ticker_info.get("longName")
+            or ticker_info.get("shortName")
+            or ticker
+        )
+
+        company_overview = (
+            ticker_info.get("longBusinessSummary")
+            or ticker_info.get("description")
+            or default_overview["company_overview"]
+        )
+
+        return {
+            "company_name": company_name,
+            "company_overview": company_overview
+        }
+
+    except Exception:
+        return default_overview
+
+
 def get_prices_for_tickers(tickers):
     """
-    Fetch latest prices for a list of ticker symbols.
-    Returns a DataFrame with ticker and latest_price columns.
+    Fetch latest prices and company overview data for a list of tickers.
     """
     price_rows = []
 
     for ticker in tickers:
         latest_price = get_latest_price(ticker)
+        company_data = get_company_overview(ticker)
 
         price_rows.append(
             {
                 "ticker": ticker,
-                "latest_price": latest_price
+                "latest_price": latest_price,
+                "company_name": company_data["company_name"],
+                "company_overview": company_data["company_overview"]
             }
         )
 
