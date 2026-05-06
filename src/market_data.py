@@ -20,8 +20,18 @@ def get_latest_price(ticker):
         )
         if stock_data.empty:
             return None
-        
-        latest_price = stock_data["Close"].dropna().iloc[-1]
+
+        close_prices = stock_data["Close"].dropna()
+
+        if close_prices.empty:
+            return None
+
+        latest_price = close_prices.iloc[-1]
+
+        # Sometimes yfinance gives a Series instead of a single number.
+        if hasattr(latest_price, "iloc"):
+            latest_price = latest_price.iloc[0]
+
         return round(float(latest_price), 2)
     
     except Exception:
