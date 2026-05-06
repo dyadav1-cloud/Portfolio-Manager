@@ -89,6 +89,11 @@ else:
         use_container_width=True
     )
 
+st.subheader("Portfolio Allocation")
+
+allocation_fig = plot_allocation_pie(position_df)
+st.pyplot(allocation_fig)
+
 
 st.dataframe(price_df, use_container_width=True)
 
