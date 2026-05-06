@@ -1,3 +1,4 @@
+import pandas as pd
 
-
-def calculate_position_metrics(trades_df, price_df):...
+def calculate_position_metrics(trades_df, price_df):
+    
