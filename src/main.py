@@ -54,6 +54,11 @@ else:
 
     summary_col1, summary_col2, summary_col3 = st.columns(3)
 
+    summary_col1.metric(
+        "Current Portfolio Value",
+        f"${portfolio_summary['total_current_value']:,.2f}"
+    )
+
     
     
     display_columns = [
