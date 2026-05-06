@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 
+
 def plot_allocation_donut(position_df):
     """
     Create an interactive donut chart showing portfolio allocation by ticker.
@@ -17,20 +18,14 @@ def plot_allocation_donut(position_df):
         )
     )
 
-    allocation_df["current_value"] = pd.to_numeric(
-        allocation_df["current_value"],
-        errors="coerce"
-    ).fillna(0)
+    # Make sure these columns are truly numeric.
+    numeric_columns = ["current_value", "cost_basis", "unrealized_pl"]
 
-    allocation_df["cost_basis"] = pd.to_numeric(
-        allocation_df["cost_basis"],
-        errors="coerce"
-    ).fillna(0)
-
-    allocation_df["unrealized_pl"] = pd.to_numeric(
-        allocation_df["unrealized_pl"],
-        errors="coerce"
-    ).fillna(0)
+    for column in numeric_columns:
+        allocation_df[column] = pd.to_numeric(
+            allocation_df[column],
+            errors="coerce"
+        ).fillna(0)
 
     total_value = allocation_df["current_value"].sum()
 
@@ -46,16 +41,19 @@ def plot_allocation_donut(position_df):
         names="ticker",
         values="current_value",
         hole=0.45,
-        title="Portfolio Allocation",
-        custom_data=[
-            "current_value",
-            "cost_basis",
-            "unrealized_pl",
-            "allocation_percent"
-        ]
+        title="Portfolio Allocation"
     )
 
+    # Manually attach the hover data to the chart.
     fig.update_traces(
+        customdata=allocation_df[
+            [
+                "current_value",
+                "cost_basis",
+                "unrealized_pl",
+                "allocation_percent"
+            ]
+        ].to_numpy(),
         textposition="inside",
         textinfo="label+percent",
         hovertemplate=(
@@ -67,8 +65,6 @@ def plot_allocation_donut(position_df):
             "<extra></extra>"
         )
     )
-
-
 
     fig.update_layout(
         showlegend=True,
