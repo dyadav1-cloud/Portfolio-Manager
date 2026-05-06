@@ -59,6 +59,11 @@ else:
         f"${portfolio_summary['total_current_value']:,.2f}"
     )
 
+    summary_col2.metric(
+        "Unrealized P/L",
+        f"${portfolio_summary['total_unrealized_pl']:,.2f}"
+    )
+
     
     
     display_columns = [
