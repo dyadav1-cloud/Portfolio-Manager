@@ -29,4 +29,12 @@ def calculate_position_metrics(trades_df, price_df):
         errors="coerce"
     ).fillna(0)
 
+    position_df["cost_basis"] = (
+        position_df["shares"] * position_df["buy_price"]
+    )
+
+    position_df["current_value"] = (
+        position_df["shares"] * position_df["latest_price"]
+    )
+
     
