@@ -32,6 +32,7 @@ def plot_allocation_donut(position_df):
         errors="coerce"
     ).fillna(0)
 
+    total_value = allocation_df["current_value"].sum()
 
     fig = px.pie(
         allocation_df,
