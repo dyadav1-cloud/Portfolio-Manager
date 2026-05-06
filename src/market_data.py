@@ -12,5 +12,7 @@ def get_latest_price(ticker):
     """
     try:
         stock_data = yf.download(
-            
+            ticker,
+            period = "5d"
+            interval
         )
