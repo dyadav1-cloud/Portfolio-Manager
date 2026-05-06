@@ -49,7 +49,15 @@ st.subheader("Live Market Prices")
 if trades_df.empty:
     st.info("Add trades to see live market prices.")
 else:
-    unique_tickers_list = trades_df["ticker"].dropna().unique().tolist()
+    unique_tickers_list = (
+        trades_df["ticker"]
+        .dropna()
+        .astype(str)
+        .str.strip()
+        .loc[lambda tickers: tickers != ""]
+        .unique()
+        .tolist()
+    )
     price_df = get_prices_for_tickers(unique_tickers_list)
     
     position_df = calculate_position_metrics(trades_df, price_df)
@@ -262,5 +270,4 @@ if not trades_df.empty:
         save_trades(trades_df, TRADES_FILE)
         st.warning("Trade deleted.")
         st.rerun()
-
 

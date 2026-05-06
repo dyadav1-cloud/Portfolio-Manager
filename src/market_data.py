@@ -40,6 +40,13 @@ def get_latest_price(ticker):
 
 
 @st.cache_data(ttl=86400)
+def _fetch_company_info(ticker):
+    """
+    Fetch raw company metadata from Yahoo and cache only successful calls.
+    """
+    return yf.Ticker(ticker).get_info()
+
+
 def get_company_overview(ticker):
     """
     Fetch the company name and business overview for one stock ticker.
@@ -50,30 +57,29 @@ def get_company_overview(ticker):
     }
 
     try:
-        ticker_info = yf.Ticker(ticker).get_info()
-
-        if not isinstance(ticker_info, dict) or not ticker_info:
-            return default_overview
-
-        company_name = (
-            ticker_info.get("longName")
-            or ticker_info.get("shortName")
-            or ticker
-        )
-
-        company_overview = (
-            ticker_info.get("longBusinessSummary")
-            or ticker_info.get("description")
-            or default_overview["company_overview"]
-        )
-
-        return {
-            "company_name": company_name,
-            "company_overview": company_overview
-        }
-
+        ticker_info = _fetch_company_info(ticker)
     except Exception:
         return default_overview
+
+    if not isinstance(ticker_info, dict) or not ticker_info:
+        return default_overview
+
+    company_name = (
+        ticker_info.get("longName")
+        or ticker_info.get("shortName")
+        or ticker
+    )
+
+    company_overview = (
+        ticker_info.get("longBusinessSummary")
+        or ticker_info.get("description")
+        or default_overview["company_overview"]
+    )
+
+    return {
+        "company_name": company_name,
+        "company_overview": company_overview
+    }
 
 
 def get_prices_for_tickers(tickers):
