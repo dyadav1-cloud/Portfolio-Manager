@@ -112,6 +112,16 @@ with chart_col2:
     pl_fig = plot_profit_loss_bar(position_df)
     st.plotly_chart(pl_fig, use_container_width=True)
 
+st.subheader("Performance by Trade Tag")
+
+if tag_summary_df.empty:
+    st.info("Add tags to your trades to see tag-based performance.")
+else:
+    st.dataframe(
+        tag_summary_df,
+        use_container_width=True
+    )
+
 with st.expander("Raw market data"):
     st.dataframe(price_df, use_container_width=True)
 
