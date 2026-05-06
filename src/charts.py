@@ -34,23 +34,41 @@ def plot_allocation_donut(position_df):
 
     total_value = allocation_df["current_value"].sum()
 
+    if total_value == 0:
+        allocation_df["allocation_percent"] = 0
+    else:
+        allocation_df["allocation_percent"] = (
+            allocation_df["current_value"] / total_value * 100
+        )
+
     fig = px.pie(
         allocation_df,
         names="ticker",
         values="current_value",
         hole=0.45,
         title="Portfolio Allocation",
-        hover_data={
-            "current_value": ":$,.2f",
-            "cost_basis": ":$,.2f",
-            "unrealized_pl": ":$,.2f"
-        }
+        custom_data=[
+            "current_value",
+            "cost_basis",
+            "unrealized_pl",
+            "allocation_percent"
+        ]
     )
 
     fig.update_traces(
         textposition="inside",
-        textinfo="percent+label"
+        textinfo="label+percent",
+        hovertemplate=(
+            "<b>%{label}</b><br>"
+            "Current Value: $%{customdata[0]:,.2f}<br>"
+            "Cost Basis: $%{customdata[1]:,.2f}<br>"
+            "Unrealized P/L: $%{customdata[2]:,.2f}<br>"
+            "Allocation: %{customdata[3]:.2f}%"
+            "<extra></extra>"
+        )
     )
+
+
 
     fig.update_layout(
         showlegend=True,
