@@ -136,4 +136,12 @@ def plot_profit_loss_bar(position_df):
         )
     )
 
+    numeric_columns = ["unrealized_pl", "current_value", "cost_basis"]
+
+    for column in numeric_columns:
+        pl_df[column] = pd.to_numeric(
+            pl_df[column],
+            errors="coerce"
+        ).fillna(0)
+
     
