@@ -15,6 +15,6 @@ def get_latest_price(ticker):
             ticker,
             period = "5d",
             interval="1d",
-            
-
+            progress=False
         )
+        Q
