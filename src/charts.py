@@ -112,3 +112,18 @@ def plot_allocation_donut(position_df):
     )
 
     return fig
+
+def plot_profit_loss_bar(position_df):
+    """
+    Create an interactive bar chart showing unrealized profit/loss by ticker.
+    """
+
+    if position_df.empty:
+        fig = px.bar(
+            x=["No positions"],
+            y=[0],
+            title="Unrealized P/L by Ticker"
+        )
+        return fig
+
+    
