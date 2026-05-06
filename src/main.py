@@ -62,6 +62,7 @@ else:
     
     position_df = calculate_position_metrics(trades_df, price_df)
     portfolio_summary = calculate_portfolio_summary(position_df)
+    tag_summary_df = calculate_tag_summary(position_df)
 
     summary_col1, summary_col2, summary_col3 = st.columns(3)
 
