@@ -65,6 +65,10 @@ else:
         "status"
     ]
 
+    st.dataframe(
+        position_df[display_columns],
+        use_container_width=True
+    )
 
 
 st.dataframe(price_df, use_container_width=True)
