@@ -32,3 +32,5 @@ def get_prices_for_tickers(tickers):
     Returns a DataFrame with ticker and latest_price columns.
     """
     price_rows = []
+
+    
