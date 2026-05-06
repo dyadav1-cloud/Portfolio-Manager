@@ -15,4 +15,19 @@ def plot_allocation_donut(position_df):
             unrealized_pl=("unrealized_pl", "sum")
         )
 
+    )
+
+    fig = px.pie(
+        allocation_df,
+        names="ticker",
+        values="current_value",
+        hole=0.45,
+        title="Portfolio Allocation",
+        hover_data={
+            "current_value": ":$,.2f",
+            "cost_basis": ":$,.2f",
+            "unrealized_pl": ":$,.2f"
+        }
+    )
+
 
