@@ -66,4 +66,8 @@ def calculate_portfolio_summary(position_df):
             "total_unrealized_pl_percent": 0
         }
 
+    total_cost_basis = position_df["cost_basis"].sum()
+    total_current_value = position_df["current_value"].sum()
+    total_unrealized_pl = position_df["unrealized_pl"].sum()
+
     
