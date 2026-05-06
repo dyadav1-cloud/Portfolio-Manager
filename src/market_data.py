@@ -25,3 +25,10 @@ def get_latest_price(ticker):
     
     except Exception:
         return None
+    
+def get_prices_for_tickers(tickers):
+    """
+    Fetch latest prices for a list of ticker symbols.
+    Returns a DataFrame with ticker and latest_price columns.
+    """
+    price_rows = []
