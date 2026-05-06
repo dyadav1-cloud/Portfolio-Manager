@@ -33,4 +33,5 @@ def get_prices_for_tickers(tickers):
     """
     price_rows = []
 
-    
+    for ticker in tickers:
+        
