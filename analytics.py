@@ -37,4 +37,8 @@ def calculate_position_metrics(trades_df, price_df):
         position_df["shares"] * position_df["latest_price"]
     )
 
+    position_df["unrealized_pl"] = (
+        position_df["current_value"] - position_df["cost_basis"]
+    )
+
     
