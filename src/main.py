@@ -92,7 +92,7 @@ else:
 st.subheader("Portfolio Allocation")
 
 allocation_fig = plot_allocation_donut(position_df)
-st.pyplot(allocation_fig)
+st.plotly_chart(allocation_fig, use_container_width=True)
 
 
 st.dataframe(price_df, use_container_width=True)
