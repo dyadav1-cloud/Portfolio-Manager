@@ -86,16 +86,16 @@ else:
 
     st.dataframe(
         position_df[display_columns],
-        width=True
+        use_container_width=True
     )
 
 st.subheader("Portfolio Allocation")
 
 allocation_fig = plot_allocation_donut(position_df)
-st.plotly_chart(allocation_fig, width=True)
+st.plotly_chart(allocation_fig, use_container_width=True)
 
 
-st.dataframe(price_df, width=True)
+st.dataframe(price_df, use_container_width=True)
 
 st.subheader("Add a New Trade")
 
