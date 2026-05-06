@@ -19,4 +19,9 @@ def calculate_position_metrics(trades_df, price_df):
         errors="coerce"
     ).fillna(0)
 
+    position_df["buy_price"] = pd.to_numeric(
+        position_df["buy_price"],
+        errors="coerce"
+    ).fillna(0)
+
     
