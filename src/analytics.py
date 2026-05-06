@@ -113,3 +113,17 @@ def calculate_tag_summary(position_df):
             trade_count=("trade_id", "count")
         )
     )
+
+    tag_summary_df["return_percent"] = (
+        tag_summary_df["total_unrealized_pl"]
+        / tag_summary_df["total_cost_basis"]
+        * 100
+    )
+
+    tag_summary_df["return_percent"] = (
+        tag_summary_df["return_percent"]
+        .replace([float("inf"), -float("inf")], 0)
+        .fillna(0)
+    )
+
+    return tag_summary_df
