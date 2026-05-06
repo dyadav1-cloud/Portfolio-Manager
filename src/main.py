@@ -42,7 +42,7 @@ col1, col2, col3 = st.columns(3)
 
 col1.metric("Total Trades", total_trades)
 col2.metric("Unique Tickers", unique_tickers)
-col3.metric("Total Cost Basis", total_cost_basis)
+col3.metric("Total Cost Basis", f"${total_cost_basis:,.2f}")
 
 st.subheader("Portfolio Overview")
 
@@ -105,7 +105,8 @@ allocation_fig = plot_allocation_donut(position_df)
 st.plotly_chart(allocation_fig, use_container_width=True)
 
 
-st.dataframe(price_df, use_container_width=True)
+with st.expander("Raw market data"):
+    st.dataframe(price_df, use_container_width=True)
 
 st.subheader("Add a New Trade")
 
