@@ -21,5 +21,5 @@ def get_latest_price(ticker):
             return None
         
         latest_price = stock_data["Close"].dropna().iloc[-1]
-
-        
+        return round(float(latest_price), 2)
+    
