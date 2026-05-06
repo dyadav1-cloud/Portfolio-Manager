@@ -17,4 +17,9 @@ def get_latest_price(ticker):
             interval="1d",
             progress=False
         )
-        Q
+        if stock_data.empty:
+            return None
+            
+
+        else:
+            return stock_data["Close"].iloc[-1]
