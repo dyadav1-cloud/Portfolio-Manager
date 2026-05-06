@@ -43,7 +43,7 @@ col3.metric("Total Cost Basis", total_cost_basis)
 st.subheader("Live Market Prices")
 
 if trades_df.empty:
-    st.info()
+    st.info("Add trades to see live market prices.")
 
 st.subheader("Add a New Trade")
 
