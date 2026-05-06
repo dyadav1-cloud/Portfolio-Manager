@@ -64,7 +64,10 @@ else:
         f"${portfolio_summary['total_unrealized_pl']:,.2f}"
     )
 
-    
+    summary_col3.metric(
+        "Unrealized Return",
+        f"{portfolio_summary['total_unrealized_pl_percent']:,.2f}%"
+    )
     
     display_columns = [
         "ticker",
