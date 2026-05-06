@@ -8,4 +8,7 @@ def get_latest_price(ticker):
     Fetch the latest available closing price for one stock ticker.
     
     The ttl=300 means Streamlit caches the result for 5 minutes,
-    so the app"""
+    so the app does not keep hitting yfinance again and again.
+    """
+    try:
+        stock
