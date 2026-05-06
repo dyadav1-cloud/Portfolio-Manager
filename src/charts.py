@@ -30,4 +30,9 @@ def plot_allocation_donut(position_df):
         }
     )
 
+    fig.update_traces(
+        textposition="inside",
+        textinfo="percent+label"
+    )
+
 
