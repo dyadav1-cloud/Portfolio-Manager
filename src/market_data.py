@@ -20,7 +20,6 @@ def get_latest_price(ticker):
         if stock_data.empty:
             return None
         
-        latest_price = stock_data["Close"].dropna().
+        latest_price = stock_data["Close"].dropna().iloc[-1]
 
-        else:
-            return stock_data["Close"].iloc[-1]
+        
