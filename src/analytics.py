@@ -52,3 +52,18 @@ def calculate_position_metrics(trades_df, price_df):
     )
 
     return position_df
+
+def calculate_portfolio_summary(position_df):
+    """
+    Calculate portfolio-level summary metrics from the position table.
+    """
+
+    if position_df.empty:
+        return {
+            "total_cost_basis": 0,
+            "total_current_value": 0,
+            "total_unrealized_pl": 0,
+            "total_unrealized_pl_percent": 0
+        }
+
+    
