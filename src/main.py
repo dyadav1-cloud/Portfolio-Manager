@@ -91,7 +91,7 @@ else:
 
 st.subheader("Portfolio Allocation")
 
-allocation_fig = plot_allocation_pie(position_df)
+allocation_fig = plot_allocation_donut(position_df)
 st.pyplot(allocation_fig)
 
 
