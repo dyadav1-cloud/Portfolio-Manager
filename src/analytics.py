@@ -84,3 +84,32 @@ def calculate_portfolio_summary(position_df):
         "total_unrealized_pl": total_unrealized_pl,
         "total_unrealized_pl_percent": total_unrealized_pl_percent
     }
+
+def calculate_tag_summary(position_df):
+    """
+    Summarize portfolio performance by trade tag.
+    """
+    if position_df.empty or "tag" not in position_df.columns:
+        return pd.DataFrame()
+
+    tag_df = position_df.copy()
+
+    tag_df["tag"] = (
+        tag_df["tag"]
+        .fillna("Untagged")
+        .astype(str)
+        .str.strip()
+    )
+
+    tag_df.loc[tag_df["tag"] == "", "tag"] = "Untagged"
+
+    tag_summary_df = (
+        tag_df
+        .groupby("tag", as_index=False)
+        .agg(
+            total_cost_basis=("cost_basis", "sum"),
+            total_current_value=("current_value", "sum"),
+            total_unrealized_pl=("unrealized_pl", "sum"),
+            trade_count=("trade_id", "count")
+        )
+    )
