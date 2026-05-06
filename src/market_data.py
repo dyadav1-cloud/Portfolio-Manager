@@ -11,4 +11,6 @@ def get_latest_price(ticker):
     so the app does not keep hitting yfinance again and again.
     """
     try:
-        stock
+        stock_data = yf.download(
+            
+        )
