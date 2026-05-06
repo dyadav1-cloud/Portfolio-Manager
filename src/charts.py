@@ -126,4 +126,14 @@ def plot_profit_loss_bar(position_df):
         )
         return fig
 
+    pl_df = (
+        position_df
+        .groupby("ticker", as_index=False)
+        .agg(
+            unrealized_pl=("unrealized_pl", "sum"),
+            current_value=("current_value", "sum"),
+            cost_basis=("cost_basis", "sum")
+        )
+    )
+
     
