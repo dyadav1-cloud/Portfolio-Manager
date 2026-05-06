@@ -144,4 +144,16 @@ def plot_profit_loss_bar(position_df):
             errors="coerce"
         ).fillna(0)
 
-    
+    fig = px.bar(
+        pl_df,
+        x="ticker",
+        y="unrealized_pl",
+        title="Unrealized Profit/Loss by Ticker",
+        text="unrealized_pl",
+        custom_data=[
+            "current_value",
+            "cost_basis",
+            "unrealized_pl"
+        ]
+    )
+
