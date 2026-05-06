@@ -16,6 +16,7 @@ def get_latest_price(ticker):
             period = "5d",
             interval="1d",
             progress=False
+            auto_adjust=False
         )
         if stock_data.empty:
             return None
