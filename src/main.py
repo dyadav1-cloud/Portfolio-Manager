@@ -4,7 +4,7 @@ import pandas as pd
 from data_manager import load_trades, save_trades, add_trade, delete_trade, edit_trade
 from market_data import get_prices_for_tickers
 from analytics import calculate_portfolio_summary, calculate_position_metrics
-from charts import plot_allocation_pie
+from charts import plot_allocation_donut
 
 # This block helps me move my file without having to change names each time.
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
