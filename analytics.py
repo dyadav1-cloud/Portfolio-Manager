@@ -41,4 +41,8 @@ def calculate_position_metrics(trades_df, price_df):
         position_df["current_value"] - position_df["cost_basis"]
     )
 
-    
+    position_df["unrealized_pl_percent"] = (
+        position_df["unrealized_pl"] / position_df["cost_basis"] * 100
+    )
+
+
