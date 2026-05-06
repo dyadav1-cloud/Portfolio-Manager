@@ -44,10 +44,10 @@ col1.metric("Total Trades", total_trades)
 col2.metric("Unique Tickers", unique_tickers)
 col3.metric("Total Cost Basis", total_cost_basis)
 
-st.subheader("Live Market Prices")
+st.subheader("Portfolio Overview")
 
 if trades_df.empty:
-    st.info("Add trades to see live market prices.")
+    st.info("Add trades to see Portfolio Overview.")
 else:
     unique_tickers_list = (
         trades_df["ticker"]
