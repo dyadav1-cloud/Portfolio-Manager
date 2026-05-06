@@ -1,6 +1,6 @@
 {
     "gitdoc.enabled": true,
-    "gitdoc.autoCommitDelay": 5000,
+    "gitdoc.autoCommitDelay": 10000,
     "gitdoc.autopush": "onCommit",
     "gitdoc.commitValidationLevel": "none",
     "files.autoSave": "afterDelay",
