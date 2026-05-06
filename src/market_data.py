@@ -34,4 +34,13 @@ def get_prices_for_tickers(tickers):
     price_rows = []
 
     for ticker in tickers:
-        
+        latest_price = get_latest_price(ticker)
+
+        price_rows.append(
+            {
+                "ticker": ticker,
+                "latest_price": latest_price
+            }
+        )
+
+    return pd.DataFrame(price_rows)
