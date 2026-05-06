@@ -1,28 +1,18 @@
-import matplotlib.pyplot as plt
+import plotly.express as px
 
-def plot_allocation_pie(position_df):
+def plot_allocation_donut(position_df):
     """
-    Create a pie chart showing portfolio allocation by ticker.
+    Create an interactive donut chart showing portfolio allocation by ticker.
 
-    Allocation is based on current market value, not original cost basis.
+    Allocation is based on current market value.
     """
-
     allocation_df = (
         position_df
-        .groupby("ticker")["current_value"]
-        .sum()
-        .reset_index()
-    )
+        .groupby("ticker", as_index=False)
+        .agg(
+            current_value=("current_value", "sum"),
+            cost_basis=("cost_basis", "sum"),
+            unrealized_pl=("unrealized_pl", "sum")
+        )
 
-    fig, ax = plt.subplots()
 
-    ax.pie(
-        allocation_df["current_value"],
-        labels=allocation_df["ticker"],
-        autopct="%1.1f%%",
-        startangle=90
-    )
-
-    ax.set_title("Portfolio Allocation by Current Value")
-
-    return fig
