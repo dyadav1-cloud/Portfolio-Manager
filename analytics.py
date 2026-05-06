@@ -19,3 +19,4 @@ def calculate_position_metrics(trades_df, price_df):
         errors="coerce"
     ).fillna(0)
 
+    
