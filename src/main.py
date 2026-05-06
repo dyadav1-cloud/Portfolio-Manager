@@ -47,7 +47,7 @@ if trades_df.empty:
 else:
     unique_tickers_list = trades_df["ticker"].dropna().unique().tolist()
     price_df = get_prices_for_tickers(unique_tickers_list)
-    price_df[]
+    price_df["latest_price"] = price_df["latest_price"].apply(lambda x: f"${x:.2f}" if pd.notnull(x) else "N/A"))
 
 st.subheader("Add a New Trade")
 
