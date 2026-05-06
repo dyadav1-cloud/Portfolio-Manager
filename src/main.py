@@ -44,6 +44,8 @@ st.subheader("Live Market Prices")
 
 if trades_df.empty:
     st.info("Add trades to see live market prices.")
+else:
+    unique
 
 st.subheader("Add a New Trade")
 
