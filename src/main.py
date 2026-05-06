@@ -2,7 +2,7 @@ import streamlit as st
 import os
 import pandas as pd
 from data_manager import load_trades, save_trades, add_trade, delete_trade, edit_trade
-from market
+from market_data import get_prices_for_tickers
 
 # This block helps me move my file without having to change names each time.
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
