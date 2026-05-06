@@ -157,3 +157,22 @@ def plot_profit_loss_bar(position_df):
         ]
     )
 
+    fig.update_traces(
+        texttemplate="$%{text:,.2f}",
+        textposition="outside",
+        hovertemplate=(
+            "<b>%{x}</b><br>"
+            "Current Value: $%{customdata[0]:,.2f}<br>"
+            "Cost Basis: $%{customdata[1]:,.2f}<br>"
+            "Unrealized P/L: $%{customdata[2]:,.2f}"
+            "<extra></extra>"
+        )
+    )
+
+    fig.update_layout(
+        xaxis_title="Ticker",
+        yaxis_title="Unrealized P/L ($)",
+        margin=dict(l=20, r=20, t=60, b=20)
+    )
+
+    return fig
