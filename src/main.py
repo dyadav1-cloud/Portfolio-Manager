@@ -104,6 +104,10 @@ st.subheader("Portfolio Allocation")
 allocation_fig = plot_allocation_donut(position_df)
 st.plotly_chart(allocation_fig, use_container_width=True)
 
+st.subheader("Profit/Loss by Ticker")
+
+pl_fig = plot_profit_loss_bar(position_df)
+st.plotly_chart(pl_fig, use_container_width=True)
 
 with st.expander("Raw market data"):
     st.dataframe(price_df, use_container_width=True)
