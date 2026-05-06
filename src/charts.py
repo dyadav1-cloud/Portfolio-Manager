@@ -15,8 +15,23 @@ def plot_allocation_donut(position_df):
             cost_basis=("cost_basis", "sum"),
             unrealized_pl=("unrealized_pl", "sum")
         )
-
     )
+
+    allocation_df["current_value"] = pd.to_numeric(
+        allocation_df["current_value"],
+        errors="coerce"
+    ).fillna(0)
+
+    allocation_df["cost_basis"] = pd.to_numeric(
+        allocation_df["cost_basis"],
+        errors="coerce"
+    ).fillna(0)
+
+    allocation_df["unrealized_pl"] = pd.to_numeric(
+        allocation_df["unrealized_pl"],
+        errors="coerce"
+    ).fillna(0)
+
 
     fig = px.pie(
         allocation_df,
