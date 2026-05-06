@@ -46,6 +46,7 @@ if trades_df.empty:
     st.info("Add trades to see live market prices.")
 else:
     unique_tickers_list = trades_df["ticker"].dropna().unique().tolist()
+    price_df = get_prices_for_tickers
 
 st.subheader("Add a New Trade")
 
