@@ -36,21 +36,57 @@ def get_latest_price(ticker):
     
     except Exception:
         return None
+
+@st.cache_data(ttl=86400)
+def get_company_profile(ticker):
+    """
+    Fetch a company's display name and business summary for one ticker.
+    """
+    default_profile = {
+        "company_name": ticker,
+        "company_summary": "Company summary unavailable."
+    }
+
+    try:
+        stock = yf.Ticker(ticker)
+        info = stock.info or {}
+
+        company_name = (
+            info.get("longName")
+            or info.get("shortName")
+            or ticker
+        )
+
+        company_summary = (
+            info.get("longBusinessSummary")
+            or info.get("description")
+            or default_profile["company_summary"]
+        )
+
+        return {
+            "company_name": company_name,
+            "company_summary": company_summary
+        }
+
+    except Exception:
+        return default_profile
     
 def get_prices_for_tickers(tickers):
     """
-    Fetch latest prices for a list of ticker symbols.
-    Returns a DataFrame with ticker and latest_price columns.
+    Fetch latest prices and company metadata for a list of ticker symbols.
     """
     price_rows = []
 
     for ticker in tickers:
         latest_price = get_latest_price(ticker)
+        profile = get_company_profile(ticker)
 
         price_rows.append(
             {
                 "ticker": ticker,
-                "latest_price": latest_price
+                "latest_price": latest_price,
+                "company_name": profile["company_name"],
+                "company_summary": profile["company_summary"]
             }
         )
 
