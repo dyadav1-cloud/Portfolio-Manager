@@ -98,6 +98,11 @@ else:
         price_history_df
     )
 
+    spy_comparison_df = calculate_spy_comparison(
+    trades_df,
+    price_history_df
+    )
+
     summary_col1, summary_col2, summary_col3 = st.columns(3)
 
     summary_col1.metric(
