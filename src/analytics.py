@@ -156,5 +156,44 @@ def calculate_portfolio_history(trades_df, price_history_df):
         errors="coerce"
     ).fillna(0)
 
-    
+    for current_date in price_history_df.index:
+        active_trades = trades_copy[
+            trades_copy["buy_date"] <= current_date
+        ]
+
+        total_value = 0
+        total_cost_basis = 0
+
+        for _, trade in active_trades.iterrows():
+            ticker = trade["ticker"]
+            shares = trade["shares"]
+            buy_price = trade["buy_price"]
+
+            if ticker in price_history_df.columns:
+                current_price = price_history_df.loc[current_date, ticker]
+
+                if pd.notna(current_price):
+                    total_value += shares * current_price
+                    total_cost_basis += shares * buy_price
+
+        unrealized_pl = total_value - total_cost_basis
+
+        if total_cost_basis == 0:
+            unrealized_return_percent = 0
+        else:
+            unrealized_return_percent = (
+                unrealized_pl / total_cost_basis
+            ) * 100
+
+        history_rows.append(
+            {
+                "date": current_date,
+                "portfolio_value": total_value,
+                "cost_basis": total_cost_basis,
+                "unrealized_pl": unrealized_pl,
+                "unrealized_return_percent": unrealized_return_percent
+            }
+        )
+
+    return pd.DataFrame(history_rows)
 
