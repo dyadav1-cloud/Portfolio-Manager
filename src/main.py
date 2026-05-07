@@ -83,8 +83,13 @@ else:
 if pd.isna(earliest_buy_date):
     portfolio_history_df = pd.DataFrame()
 else:
+    history_tickers_list = unique_tickers_list.copy()
+
+    if "SPY" not in history_tickers_list:
+        history_tickers_list.append("SPY")
+
     price_history_df = get_historical_prices(
-        unique_tickers_list,
+        history_tickers_list,
         earliest_buy_date.strftime("%Y-%m-%d")
     )
 
