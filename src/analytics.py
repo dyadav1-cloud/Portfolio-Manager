@@ -206,5 +206,29 @@ def calculate_spy_comparison(trades_df, price_history_df):
     both the trade tickers and SPY.
     """
 
+    if trades_df.empty or price_history_df.empty or "SPY" not in price_history_df.columns:
+        return pd.DataFrame()
+
+    comparison_rows = []
+
+    trades_copy = trades_df.copy()
+
+    trades_copy["buy_date"] = pd.to_datetime(
+        trades_copy["buy_date"],
+        errors="coerce"
+    )
+
+    trades_copy["shares"] = pd.to_numeric(
+        trades_copy["shares"],
+        errors="coerce"
+    ).fillna(0)
+
+    trades_copy["buy_price"] = pd.to_numeric(
+        trades_copy["buy_price"],
+        errors="coerce"
+    ).fillna(0)
+
+    latest_date = price_history_df.index.max()
+
     
 
