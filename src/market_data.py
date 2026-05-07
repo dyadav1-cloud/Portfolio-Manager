@@ -110,5 +110,17 @@ def get_historical_prices(tickers, start_date):
 
     Returns a DataFrame where the index is date and each column is a ticker.
     """
+    try:
+        stock_data = yf.download(
+            tickers,
+            start=start_date,
+            progress=False,
+            auto_adjust=False
+        )
+        if stock_data.empty:
+            return pd.DataFrame()
+        
 
-    
+    except:
+        return
+
