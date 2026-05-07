@@ -197,3 +197,14 @@ def calculate_portfolio_history(trades_df, price_history_df):
 
     return pd.DataFrame(history_rows)
 
+def calculate_spy_comparison(trades_df, price_history_df):
+    """
+    Compare each trade's actual return against the return the user
+    would have earned by buying SPY on the same buy date.
+
+    This uses historical prices from price_history_df, which should include
+    both the trade tickers and SPY.
+    """
+
+    
+
