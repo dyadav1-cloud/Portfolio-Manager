@@ -7,7 +7,8 @@ from analytics import (
     calculate_portfolio_summary,
     calculate_position_metrics,
     calculate_tag_summary,
-    calculate_portfolio_history
+    calculate_portfolio_history,
+    calculate_spy_comparison
 )
 from charts import (
     plot_allocation_donut,
@@ -36,6 +37,7 @@ price_df = pd.DataFrame()
 position_df = pd.DataFrame()
 tag_summary_df = pd.DataFrame()
 portfolio_history_df = pd.DataFrame()
+spy_comparison_df = pd.DataFrame()
 
 if trades_df.empty:
     total_trades = 0
