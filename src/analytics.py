@@ -140,4 +140,23 @@ def plot_tag_performance_bar(tag_summary_df):
         )
         return fig
 
-    
+    for column in numeric_columns:
+        chart_df[column] = pd.to_numeric(
+            chart_df[column],
+            errors="coerce"
+        ).fillna(0)
+
+    fig = px.bar(
+        chart_df,
+        x="tag",
+        y="total_unrealized_pl",
+        title="Unrealized Profit/Loss by Trade Tag",
+        text="total_unrealized_pl",
+        custom_data=[
+            "total_cost_basis",
+            "total_current_value",
+            "total_unrealized_pl",
+            "return_percent",
+            "trade_count"
+        ]
+    )
