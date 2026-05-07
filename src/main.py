@@ -186,6 +186,9 @@ st.subheader("SPY Benchmark Comparison")
 if spy_comparison_df.empty:
     st.info("SPY comparison will appear once valid trades and price history are available.")
 else:
+    spy_fig = plot_spy_comparison_bar(spy_comparison_df)
+    st.plotly_chart(spy_fig, use_container_width=True)
+
     display_spy_columns = [
         "ticker",
         "buy_date",
@@ -199,10 +202,11 @@ else:
         "difference_vs_spy"
     ]
 
-    st.dataframe(
-        spy_comparison_df[display_spy_columns],
-        use_container_width=True
-    )
+    with st.expander("View SPY comparison data"):
+        st.dataframe(
+            spy_comparison_df[display_spy_columns],
+            use_container_width=True
+        )
 
 st.subheader("Add a New Trade")
 
