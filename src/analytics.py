@@ -128,6 +128,21 @@ def calculate_tag_summary(position_df):
 
     return tag_summary_df
 
+def calculate_portfolio_history(trades_df, price_history_df):
+     """
+    Estimate portfolio value, cost basis, and unrealized P/L over time.
 
-    
-    
+    For each date, this function includes only trades that were already bought
+    on or before that date.
+    """
+    if trades_df.empty or price_history_df.empty:
+        return pd.DataFrame()
+
+    history_rows = []
+    trades_copy = trades_df.copy()
+
+    trades_copy["buy_date"] = pd.to_datetime(
+        trades_copy["buy_date"],
+        errors="coerce"
+    )
+
