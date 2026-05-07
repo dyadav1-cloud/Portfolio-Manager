@@ -14,7 +14,8 @@ from charts import (
     plot_allocation_donut,
     plot_profit_loss_bar,
     plot_tag_performance_bar,
-    plot_portfolio_history_line
+    plot_portfolio_history_line,
+    plot_spy_comparison_bar
 )
 
 # This block helps me move my file without having to change names each time.
