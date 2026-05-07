@@ -127,3 +127,9 @@ def calculate_tag_summary(position_df):
     )
 
     return tag_summary_df
+
+def plot_tag_performance_bar(tag_summary_df):
+    """
+    Create an interactive bar chart showing unrealized profit/loss by trade tag.
+    """
+    
