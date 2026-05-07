@@ -102,3 +102,5 @@ def get_prices_for_tickers(tickers):
         )
 
     return pd.DataFrame(price_rows)
+
+
