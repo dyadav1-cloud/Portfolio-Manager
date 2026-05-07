@@ -103,4 +103,12 @@ def get_prices_for_tickers(tickers):
 
     return pd.DataFrame(price_rows)
 
+@st.cache_data(ttl=3600)
+def get_historical_prices(tickers, start_date):
+    """
+    Fetch historical adjusted closing prices for multiple tickers.
 
+    Returns a DataFrame where the index is date and each column is a ticker.
+    """
+
+    
