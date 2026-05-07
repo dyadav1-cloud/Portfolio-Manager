@@ -69,6 +69,21 @@ else:
     portfolio_summary = calculate_portfolio_summary(position_df)
     tag_summary_df = calculate_tag_summary(position_df)
 
+    earliest_buy_date = pd.to_datetime(trades_df["buy_date"], errors="coerce").min()
+
+if pd.isna(earliest_buy_date):
+    portfolio_history_df = pd.DataFrame()
+else:
+    price_history_df = get_historical_prices(
+        unique_tickers_list,
+        earliest_buy_date.strftime("%Y-%m-%d")
+    )
+
+    portfolio_history_df = calculate_portfolio_history(
+        trades_df,
+        price_history_df
+    )
+
     summary_col1, summary_col2, summary_col3 = st.columns(3)
 
     summary_col1.metric(
