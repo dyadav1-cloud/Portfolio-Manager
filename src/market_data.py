@@ -120,7 +120,20 @@ def get_historical_prices(tickers, start_date):
         if stock_data.empty:
             return pd.DataFrame()
         
+        if "Adj Close" in stock_data.columns:
+            price_history = stock_data["Adj Close"]
+        else:
+            price_history = stock_data["Close"]
+
+        if isinstance(price_history, pd.Series):
+            price_history = price_history.to_frame(name=tickers[0])
+
+        price_history = price_history.dropna(how="all")
+
+        return price_history
 
     except:
-        return
+        return pd.DataFrame()
+    
+
 
