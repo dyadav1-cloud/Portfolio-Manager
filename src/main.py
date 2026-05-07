@@ -117,10 +117,14 @@ st.subheader("Performance by Trade Tag")
 if tag_summary_df.empty:
     st.info("Add tags to your trades to see tag-based performance.")
 else:
-    st.dataframe(
-        tag_summary_df,
-        use_container_width=True
-    )
+    tag_fig = plot_tag_performance_bar(tag_summary_df)
+    st.plotly_chart(tag_fig, use_container_width=True)
+
+    with st.expander("View tag performance data"):
+        st.dataframe(
+            tag_summary_df,
+            use_container_width=True
+        )
 
 with st.expander("Raw market data"):
     st.dataframe(price_df, use_container_width=True)
