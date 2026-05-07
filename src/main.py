@@ -34,6 +34,8 @@ st.write("Trade journal and performance dashboard.")
 trades_df = load_trades(TRADES_FILE)
 price_df = pd.DataFrame()
 position_df = pd.DataFrame()
+tag_summary_df = pd.DataFrame()
+portfolio_history_df = pd.DataFrame()
 
 if trades_df.empty:
     total_trades = 0
