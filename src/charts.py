@@ -241,3 +241,17 @@ def plot_tag_performance_bar(tag_summary_df):
     )
 
     return fig
+
+def plot_portfolio_history_line(portfolio_history_df):
+    """
+    Create an interactive line chart showing portfolio value,
+    cost basis, and unrealized profit/loss over time.
+    """
+    if portfolio_history_df.empty:
+        fig = px.line(
+            x=[],
+            y=[],
+            title="Portfolio Performance Over Time"
+        )
+        return fig
+    
