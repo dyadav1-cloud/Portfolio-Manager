@@ -261,3 +261,33 @@ def plot_portfolio_history_line(portfolio_history_df):
         chart_df["date"],
         errors="coerce"
     )
+
+    long_df = chart_df.melt(
+        id_vars="date",
+        value_vars=[
+            "portfolio_value",
+            "cost_basis",
+            "unrealized_pl"
+        ],
+        var_name="metric",
+        value_name="value"
+    )
+
+    label_map = {
+        "portfolio_value": "Portfolio Value",
+        "cost_basis": "Cost Basis",
+        "unrealized_pl": "Unrealized P/L"
+    }
+
+    long_df["metric"] = long_df["metric"].map(label_map)
+
+    fig = px.line(
+        long_df,
+        x="date",
+        y="value",
+        color="metric",
+        title="Portfolio Performance Over Time",
+        markers=True
+    )
+
+    
