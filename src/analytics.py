@@ -262,6 +262,44 @@ def calculate_spy_comparison(trades_df, price_history_df):
         ):
             continue
 
+        actual_current_value = shares * ticker_latest_price
+        actual_cost_basis = shares * buy_price
+        actual_pl = actual_current_value - actual_cost_basis
+
+        spy_equivalent_shares = actual_cost_basis / spy_buy_price
+        spy_current_value = spy_equivalent_shares * spy_latest_price
+        spy_pl = spy_current_value - actual_cost_basis
+
+        actual_return_percent = (
+            actual_pl / actual_cost_basis * 100
+            if actual_cost_basis != 0 else 0
+        )
+
+        spy_return_percent = (
+            spy_pl / actual_cost_basis * 100
+            if actual_cost_basis != 0 else 0
+        )
+
+        difference_vs_spy = actual_pl - spy_pl
+
+        comparison_rows.append(
+            {
+                "trade_id": trade["trade_id"],
+                "ticker": ticker,
+                "buy_date": buy_date,
+                "actual_cost_basis": actual_cost_basis,
+                "actual_current_value": actual_current_value,
+                "actual_pl": actual_pl,
+                "actual_return_percent": actual_return_percent,
+                "spy_current_value": spy_current_value,
+                "spy_pl": spy_pl,
+                "spy_return_percent": spy_return_percent,
+                "difference_vs_spy": difference_vs_spy
+            }
+        )
+
+    return pd.DataFrame(comparison_rows)
+
 
     
 
