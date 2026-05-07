@@ -220,4 +220,24 @@ def plot_tag_performance_bar(tag_summary_df):
         ]
     )
 
-    
+    fig.update_traces(
+        texttemplate="$%{text:,.2f}",
+        textposition="outside",
+        hovertemplate=(
+            "<b>%{x}</b><br>"
+            "Cost Basis: $%{customdata[0]:,.2f}<br>"
+            "Current Value: $%{customdata[1]:,.2f}<br>"
+            "Unrealized P/L: $%{customdata[2]:,.2f}<br>"
+            "Return: %{customdata[3]:.2f}%<br>"
+            "Number of Trades: %{customdata[4]:.0f}"
+            "<extra></extra>"
+        )
+    )
+
+    fig.update_layout(
+        xaxis_title="Trade Tag",
+        yaxis_title="Unrealized P/L ($)",
+        margin=dict(l=20, r=20, t=60, b=20)
+    )
+
+    return fig
