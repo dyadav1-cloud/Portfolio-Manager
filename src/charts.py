@@ -255,3 +255,9 @@ def plot_portfolio_history_line(portfolio_history_df):
         )
         return fig
     
+    chart_df = portfolio_history_df.copy()
+
+    chart_df["date"] = pd.to_datetime(
+        chart_df["date"],
+        errors="coerce"
+    )
