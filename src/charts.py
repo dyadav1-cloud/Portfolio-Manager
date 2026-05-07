@@ -307,3 +307,46 @@ def plot_portfolio_history_line(portfolio_history_df):
     )
 
     return fig
+
+def plot_spy_comparison_bar(spy_comparison_df):
+    """
+    Create an interactive grouped bar chart comparing actual trade P/L
+    against the equivalent SPY investment P/L.
+    """
+    if spy_comparison_df.empty:
+        fig = px.bar(
+            x=["No comparison data"],
+            y=[0],
+            title="Actual P/L vs. SPY P/L"
+        )
+        return fig
+
+    chart_df = spy_comparison_df.copy()
+
+    numeric_columns = [
+        "actual_pl",
+        "spy_pl",
+        "difference_vs_spy",
+        "actual_return_percent",
+        "spy_return_percent"
+    ]
+
+    for column in numeric_columns:
+        chart_df[column] = pd.to_numeric(
+            chart_df[column],
+            errors="coerce"
+        ).fillna(0)
+
+    long_df = chart_df.melt(
+        id_vars=["ticker", "difference_vs_spy"],
+        value_vars=["actual_pl", "spy_pl"],
+        var_name="comparison_type",
+        value_name="profit_loss"
+    )
+
+    label_map = {
+        "actual_pl": "Actual Trade",
+        "spy_pl": "SPY Alternative"
+    }
+
+    
