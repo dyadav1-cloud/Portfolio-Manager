@@ -137,19 +137,31 @@ with chart_col2:
     pl_fig = plot_profit_loss_bar(position_df)
     st.plotly_chart(pl_fig, use_container_width=True)
 
-st.subheader("Performance by Trade Tag")
+tag_col, history_col = st.columns(2)
 
-if tag_summary_df.empty:
-    st.info("Add tags to your trades to see tag-based performance.")
-else:
-    tag_fig = plot_tag_performance_bar(tag_summary_df)
-    st.plotly_chart(tag_fig, use_container_width=True)
+with tag_col:
+    st.subheader("Performance by Trade Tag")
 
-    with st.expander("View tag performance data"):
-        st.dataframe(
-            tag_summary_df,
-            use_container_width=True
-        )
+    if tag_summary_df.empty:
+        st.info("Add tags to your trades to see tag-based performance.")
+    else:
+        tag_fig = plot_tag_performance_bar(tag_summary_df)
+        st.plotly_chart(tag_fig, use_container_width=True)
+
+        with st.expander("View tag performance data"):
+            st.dataframe(
+                tag_summary_df,
+                use_container_width=True
+            )
+
+with history_col:
+    st.subheader("Portfolio Over Time")
+
+    if portfolio_history_df.empty:
+        st.info("Add valid buy dates to see portfolio performance over time.")
+    else:
+        history_fig = plot_portfolio_history_line(portfolio_history_df)
+        st.plotly_chart(history_fig, use_container_width=True)
 
 with st.expander("Raw market data"):
     st.dataframe(price_df, use_container_width=True)
