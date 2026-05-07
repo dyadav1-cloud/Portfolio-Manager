@@ -180,6 +180,29 @@ with history_col:
 with st.expander("Raw market data"):
     st.dataframe(price_df, use_container_width=True)
 
+st.subheader("SPY Benchmark Comparison")
+
+if spy_comparison_df.empty:
+    st.info("SPY comparison will appear once valid trades and price history are available.")
+else:
+    display_spy_columns = [
+        "ticker",
+        "buy_date",
+        "actual_cost_basis",
+        "actual_current_value",
+        "actual_pl",
+        "actual_return_percent",
+        "spy_current_value",
+        "spy_pl",
+        "spy_return_percent",
+        "difference_vs_spy"
+    ]
+
+    st.dataframe(
+        spy_comparison_df[display_spy_columns],
+        use_container_width=True
+    )
+
 st.subheader("Add a New Trade")
 
 with st.form("add_trade_form"):
