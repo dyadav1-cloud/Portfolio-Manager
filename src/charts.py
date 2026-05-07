@@ -176,3 +176,33 @@ def plot_profit_loss_bar(position_df):
     )
 
     return fig
+
+def plot_tag_performance_bar(tag_summary_df):
+    """
+    Create an interactive bar chart showing unrealized profit/loss by trade tag.
+    """
+    if tag_summary_df.empty:
+        fig = px.bar(
+            x=["No tags"],
+            y=[0],
+            title="Performance by Trade Tag"
+        )
+        return fig
+    
+    chart_df = tag_summary_df.copy()
+
+    numeric_columns = [
+        "total_cost_basis",
+        "total_current_value",
+        "total_unrealized_pl",
+        "return_percent",
+        "trade_count"
+    ]
+
+    for column in numeric_columns:
+        chart_df[column] = pd.to_numeric(
+            chart_df[column],
+            errors="coerce"
+        ).fillna(0)
+
+    
