@@ -290,4 +290,20 @@ def plot_portfolio_history_line(portfolio_history_df):
         markers=True
     )
 
-    
+    fig.update_traces(
+        hovertemplate=(
+            "<b>%{fullData.name}</b><br>"
+            "Date: %{x|%b %d, %Y}<br>"
+            "Value: $%{y:,.2f}"
+            "<extra></extra>"
+        )
+    )
+
+    fig.update_layout(
+        xaxis_title="Date",
+        yaxis_title="Value ($)",
+        margin=dict(l=20, r=20, t=60, b=20),
+        legend_title_text=""
+    )
+
+    return fig
