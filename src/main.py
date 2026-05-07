@@ -9,7 +9,12 @@ from analytics import (
     calculate_tag_summary,
     calculate_portfolio_history
 )
-from charts import plot_allocation_donut, plot_profit_loss_bar, plot_tag_performance_bar
+from charts import (
+    plot_allocation_donut,
+    plot_profit_loss_bar,
+    plot_tag_performance_bar,
+    plot_portfolio_history_line
+)
 
 # This block helps me move my file without having to change names each time.
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
