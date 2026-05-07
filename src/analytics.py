@@ -230,5 +230,38 @@ def calculate_spy_comparison(trades_df, price_history_df):
 
     latest_date = price_history_df.index.max()
 
+    for _, trade in trades_copy.iterrows():
+        ticker = trade["ticker"]
+        buy_date = trade["buy_date"]
+        shares = trade["shares"]
+        buy_price = trade["buy_price"]
+
+        if pd.isna(buy_date) or ticker not in price_history_df.columns:
+            continue
+
+        available_dates = price_history_df.index[
+            price_history_df.index >= buy_date
+        ]
+
+        if len(available_dates) == 0:
+            continue
+
+        first_available_date = available_dates[0]
+
+        ticker_buy_price = price_history_df.loc[first_available_date, ticker]
+        ticker_latest_price = price_history_df.loc[latest_date, ticker]
+
+        spy_buy_price = price_history_df.loc[first_available_date, "SPY"]
+        spy_latest_price = price_history_df.loc[latest_date, "SPY"]
+
+        if (
+            pd.isna(ticker_buy_price)
+            or pd.isna(ticker_latest_price)
+            or pd.isna(spy_buy_price)
+            or pd.isna(spy_latest_price)
+        ):
+            continue
+
+
     
 
