@@ -1,61 +1,68 @@
 import streamlit as st
 
+
 def apply_custom_style():
     """
-    Apply custom CSS to make the app feel more polished and dashboard-like.
+    Apply light visual polish without overriding Streamlit's light/dark theme.
+    This keeps the app compatible with both themes.
     """
     st.markdown(
         """
         <style>
-        .stApp {
-            background: linear-gradient(135deg, #0f1117 0%, #111827 50%, #0b1120 100%);
-            color: #f9fafb;
+        /* Page spacing */
+        .block-container {
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+            max-width: 1400px;
         }
 
+        /* Headings */
         h1 {
-            font-size: 3rem !important;
             font-weight: 800 !important;
             letter-spacing: -0.04em;
+            margin-bottom: 0.4rem;
         }
 
         h2, h3 {
+            font-weight: 700 !important;
             letter-spacing: -0.03em;
         }
 
-        [data-testid="stSidebar"] {
-            background-color: #0b1120;
-            border-right: 1px solid #1f2937;
-        }
-
+        /* Metric cards: use theme variables instead of fixed colors */
         [data-testid="stMetric"] {
-            background-color: rgba(17, 24, 39, 0.85);
-            border: 1px solid #273244;
             padding: 1rem;
-            border-radius: 18px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-        }
-
-        div[data-testid="stDataFrame"] {
             border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid #273244;
+            border: 1px solid rgba(128, 128, 128, 0.25);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
         }
 
+        [data-testid="stMetricLabel"] {
+            font-size: 0.85rem;
+        }
+
+        [data-testid="stMetricValue"] {
+            font-weight: 750;
+        }
+
+        /* Dataframes */
+        div[data-testid="stDataFrame"] {
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(128, 128, 128, 0.22);
+        }
+
+        /* Buttons */
         .stButton > button {
             border-radius: 12px;
-            border: 1px solid #374151;
-            background-color: #111827;
-            color: #f9fafb;
-            padding: 0.55rem 1rem;
+            border: 1px solid rgba(128, 128, 128, 0.35);
+            font-weight: 600;
         }
 
         .stButton > button:hover {
-            border-color: #60a5fa;
-            background-color: #1f2937;
-            color: #ffffff;
+            border-color: rgba(59, 130, 246, 0.9);
         }
 
-        .stSelectbox div,
+        /* Inputs */
         .stTextInput input,
         .stNumberInput input,
         .stTextArea textarea,
@@ -63,15 +70,15 @@ def apply_custom_style():
             border-radius: 12px;
         }
 
+        /* Expanders */
         [data-testid="stExpander"] {
-            border: 1px solid #273244;
-            border-radius: 16px;
-            background-color: rgba(17, 24, 39, 0.55);
+            border-radius: 14px;
+            border: 1px solid rgba(128, 128, 128, 0.25);
         }
 
-        .block-container {
-            padding-top: 2rem;
-            padding-bottom: 3rem;
+        /* Sidebar */
+        [data-testid="stSidebar"] {
+            border-right: 1px solid rgba(128, 128, 128, 0.18);
         }
         </style>
         """,
