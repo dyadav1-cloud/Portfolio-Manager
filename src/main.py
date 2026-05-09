@@ -303,112 +303,113 @@ st.dataframe(trades_df)
 
 if not trades_df.empty:
     with st.expander("Edit a Trade"):
-    st.subheader("Edit a Trade")
+        st.subheader("Edit a Trade")
 
-    edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
-    selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
+        edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
+        selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
 
-    selected_trade = trades_df[trades_df["trade_id"] == selected_edit_id].iloc[0]
+        selected_trade = trades_df[trades_df["trade_id"] == selected_edit_id].iloc[0]
 
-    with st.form("edit_trade_form"):
-        edit_ticker = st.text_input("Edit Ticker", value=str(selected_trade["ticker"]))
-        edit_shares = st.number_input(
-            "Edit Shares",
-            min_value=0.0,
-            step=1.0,
-            value=float(selected_trade["shares"])
-        )
+        with st.form("edit_trade_form"):
+            edit_ticker = st.text_input("Edit Ticker", value=str(selected_trade["ticker"]))
+            edit_shares = st.number_input(
+                "Edit Shares",
+                min_value=0.0,
+                step=1.0,
+                value=float(selected_trade["shares"])
+            )
 
-        edit_buy_price = st.number_input(
-            "Edit Buy Price",
-            min_value=0.0,
-            step=0.01,
-            value=float(selected_trade["buy_price"])
-        )
+            edit_buy_price = st.number_input(
+                "Edit Buy Price",
+                min_value=0.0,
+                step=0.01,
+                value=float(selected_trade["buy_price"])
+            )
 
-        edit_buy_date = st.date_input("Edit Buy Date", value=pd.to_datetime(selected_trade["buy_date"]))
+            edit_buy_date = st.date_input("Edit Buy Date", value=pd.to_datetime(selected_trade["buy_date"]))
 
-        edit_sell_price = st.number_input(
-            "Edit Sell Price",
-            min_value=0.0,
-            step=0.01,
-            value=float(selected_trade["sell_price"]) if selected_trade["sell_price"] != "" else 0.0
-        )
+            edit_sell_price = st.number_input(
+                "Edit Sell Price",
+                min_value=0.0,
+                step=0.01,
+                value=float(selected_trade["sell_price"]) if selected_trade["sell_price"] != "" else 0.0
+            )
 
-        edit_sell_date = st.date_input(
-            "Edit Sell Date",
-            value=pd.to_datetime(selected_trade["sell_date"]) if selected_trade["sell_date"] != "" else pd.Timestamp.today()
-        )
+            edit_sell_date = st.date_input(
+                "Edit Sell Date",
+                value=pd.to_datetime(selected_trade["sell_date"]) if selected_trade["sell_date"] != "" else pd.Timestamp.today()
+            )
 
-        edit_tag = st.text_input("Edit Tag", value=str(selected_trade["tag"]))
-        edit_thesis = st.text_area("Edit Investment Thesis", value=str(selected_trade["thesis"]))
+            edit_tag = st.text_input("Edit Tag", value=str(selected_trade["tag"]))
+            edit_thesis = st.text_area("Edit Investment Thesis", value=str(selected_trade["thesis"]))
 
-        edit_conviction = st.selectbox(
-            "Edit Conviction Level",
-            ["Low", "Medium", "High"],
-            index=["Low", "Medium", "High"].index(selected_trade["conviction"])
-            if selected_trade["conviction"] in ["Low", "Medium", "High"] else 1
-        )
+            edit_conviction = st.selectbox(
+                "Edit Conviction Level",
+                ["Low", "Medium", "High"],
+                index=["Low", "Medium", "High"].index(selected_trade["conviction"])
+                if selected_trade["conviction"] in ["Low", "Medium", "High"] else 1
+            )
 
-        edit_target_price = st.number_input(
-            "Edit Target Price",
-            min_value=0.0,
-            step=0.01,
-            value=float(selected_trade["target_price"]) if selected_trade["target_price"] != "" else 0.0
-        )
+            edit_target_price = st.number_input(
+                "Edit Target Price",
+                min_value=0.0,
+                step=0.01,
+                value=float(selected_trade["target_price"]) if selected_trade["target_price"] != "" else 0.0
+            )
 
-        edit_status = st.selectbox(
-            "Edit Status",
-            ["Open", "Closed"],
-            index=["Open", "Closed"].index(selected_trade["status"])
-            if selected_trade["status"] in ["Open", "Closed"] else 0
-        )
+            edit_status = st.selectbox(
+                "Edit Status",
+                ["Open", "Closed"],
+                index=["Open", "Closed"].index(selected_trade["status"])
+                if selected_trade["status"] in ["Open", "Closed"] else 0
+            )
 
-        edit_submitted = st.form_submit_button("Save Changes")
+            edit_submitted = st.form_submit_button("Save Changes")
 
-        if edit_submitted:
-            if edit_ticker.strip() == "":
-                st.error("Please enter a ticker symbol.")
+            if edit_submitted:
+                if edit_ticker.strip() == "":
+                    st.error("Please enter a ticker symbol.")
 
-            elif edit_shares <= 0:
-                st.error("Shares must be greater than zero.")
+                elif edit_shares <= 0:
+                    st.error("Shares must be greater than zero.")
 
-            elif edit_buy_price <= 0:
-                st.error("Buy price must be greater than zero.")
+                elif edit_buy_price <= 0:
+                    st.error("Buy price must be greater than zero.")
 
-            elif edit_status == "Closed" and edit_sell_price <= 0:
-                st.error("Closed trades need a sell price.")
+                elif edit_status == "Closed" and edit_sell_price <= 0:
+                    st.error("Closed trades need a sell price.")
 
-            else:
-                trades_df = edit_trade(
-                    trades_df=trades_df,
-                    trade_id=selected_edit_id,
-                    ticker=edit_ticker,
-                    shares=edit_shares,
-                    buy_price=edit_buy_price,
-                    buy_date=edit_buy_date,
-                    sell_price=edit_sell_price,
-                    sell_date=edit_sell_date,
-                    tag=edit_tag,
-                    thesis=edit_thesis,
-                    conviction=edit_conviction,
-                    target_price=edit_target_price,
-                    status=edit_status
-                )
-                save_trades(trades_df, TRADES_FILE)
-                st.success("Trade updated successfully!")
-                st.rerun()
+                else:
+                    trades_df = edit_trade(
+                        trades_df=trades_df,
+                        trade_id=selected_edit_id,
+                        ticker=edit_ticker,
+                        shares=edit_shares,
+                        buy_price=edit_buy_price,
+                        buy_date=edit_buy_date,
+                        sell_price=edit_sell_price,
+                        sell_date=edit_sell_date,
+                        tag=edit_tag,
+                        thesis=edit_thesis,
+                        conviction=edit_conviction,
+                        target_price=edit_target_price,
+                        status=edit_status
+                    )
+                    save_trades(trades_df, TRADES_FILE)
+                    st.success("Trade updated successfully!")
+                    st.rerun()
 
 
 if not trades_df.empty:
-    st.subheader("Delete a Trade")
+    with st.expander("Edit a Trade"):
+        st.subheader("Delete a Trade")
 
-    trade_ids = trades_df["trade_id"].tolist()
-    selected_trade_id = st.selectbox("Select Trade ID to Delete", trade_ids)
+        trade_ids = trades_df["trade_id"].tolist()
+        selected_trade_id = st.selectbox("Select Trade ID to Delete", trade_ids)
 
-    if st.button("Delete Selected Trade"):
-        trades_df = delete_trade(trades_df, selected_trade_id)
-        save_trades(trades_df, TRADES_FILE)
-        st.warning("Trade deleted.")
-        st.rerun()
+        if st.button("Delete Selected Trade"):
+            trades_df = delete_trade(trades_df, selected_trade_id)
+            save_trades(trades_df, TRADES_FILE)
+            st.warning("Trade deleted.")
+            st.rerun()
 
