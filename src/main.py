@@ -260,7 +260,26 @@ with st.form("add_trade_form"):
     else:
         tag = selected_strategy
 
-    thesis = st.text_area("Investment Thesis", placeholder="Why did you enter this trade?")
+        entry_reason = st.text_area(
+        "Reason for Entry",
+        placeholder="Why are you entering this trade?"
+    )
+
+    main_risk = st.text_area(
+        "Main Risk",
+        placeholder="What could go wrong with this trade?"
+    )
+
+    exit_plan = st.text_area(
+        "Exit Plan",
+        placeholder="What would make you sell or close this trade?"
+    )
+
+    thesis = (
+        f"Reason for Entry: {entry_reason}\n"
+        f"Main Risk: {main_risk}\n"
+        f"Exit Plan: {exit_plan}"
+    )
     conviction = st.selectbox("Conviction Level", ["Low", "Medium", "High"])
     target_price = st.number_input("Target Price", min_value=0.0, step=0.01)
     status = st.selectbox("Status", ["Open", "Closed"])
