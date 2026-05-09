@@ -102,33 +102,33 @@ else:
     total_cost_basis = (trades_df["buy_price"] * trades_df["shares"]).sum()
 
 
+if page == "Dashboard":
+    col1, col2, col3 = st.columns(3)
 
-col1, col2, col3 = st.columns(3)
+    col1.metric("Total Trades", total_trades)
+    col2.metric("Unique Tickers", unique_tickers)
+    col3.metric("Total Cost Basis", f"${total_cost_basis:,.2f}")
 
-col1.metric("Total Trades", total_trades)
-col2.metric("Unique Tickers", unique_tickers)
-col3.metric("Total Cost Basis", f"${total_cost_basis:,.2f}")
+    st.subheader("Market Snapshot")
 
-st.subheader("Market Snapshot")
+    if market_snapshot_df.empty:
+        st.info("Market snapshot is currently unavailable.")
+    else:
+        best_market = market_snapshot_df.sort_values(
+            "five_day_return_percent",
+            ascending=False
+        ).iloc[0]
 
-if market_snapshot_df.empty:
-    st.info("Market snapshot is currently unavailable.")
-else:
-    best_market = market_snapshot_df.sort_values(
-        "five_day_return_percent",
-        ascending=False
-    ).iloc[0]
+        st.write(
+            f"Currently leading: **{best_market['market']}** "
+            f"({best_market['ticker']}) with a "
+            f"**{best_market['five_day_return_percent']:.2f}%** 5-day return."
+        )
 
-    st.write(
-        f"Currently leading: **{best_market['market']}** "
-        f"({best_market['ticker']}) with a "
-        f"**{best_market['five_day_return_percent']:.2f}%** 5-day return."
-    )
-
-    st.dataframe(
-        market_snapshot_df,
-        use_container_width=True
-    )
+        st.dataframe(
+            market_snapshot_df,
+            use_container_width=True
+        )
 
 st.subheader("Portfolio Overview")
 
