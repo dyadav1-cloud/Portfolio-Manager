@@ -302,6 +302,7 @@ st.subheader("Saved Trades")
 st.dataframe(trades_df)
 
 if not trades_df.empty:
+    with st.expander("Edit a Trade"):
     st.subheader("Edit a Trade")
 
     edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
