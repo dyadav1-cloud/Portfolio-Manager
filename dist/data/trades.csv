@@ -1,2 +1,3 @@
 trade_id,ticker,shares,buy_price,buy_date,sell_price,sell_date,tag,thesis,conviction,target_price,status
 1,AAPL,1.0,100.0,2026-04-26,120.0,2026-04-26,mom,tst,High,200.0,Open
+2,MSFT,2.0,100.0,2026-04-28,200.0,2026-04-30,something,"I did this trade because i like this trade, this is the best trade there is, no one else can do this trade better than me!",Low,500.0,Open
