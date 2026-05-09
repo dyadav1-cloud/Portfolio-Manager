@@ -376,7 +376,9 @@ if not trades_df.empty:
                 min_value=0.0,
                 step=0.01,
                 value=float(selected_trade["sell_price"]) if selected_trade["sell_price"] != "" else 0.0
-            )if not trades_df.empty:
+            )
+            
+            if not trades_df.empty:
     with st.expander("Edit a Trade"):
         edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
         selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
