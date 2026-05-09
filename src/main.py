@@ -111,31 +111,29 @@ else:
 
     risk_metrics = calculate_risk_metrics(portfolio_history_df)
 
-    summary_col1, summary_col2, summary_col3 = st.columns(3)
+    overview_col1, overview_col2, overview_col3, overview_col4, overview_col5 = st.columns(5)
 
-    summary_col1.metric(
-        "Current Portfolio Value",
+    overview_col1.metric(
+        "Portfolio Value",
         f"${portfolio_summary['total_current_value']:,.2f}"
     )
 
-    summary_col2.metric(
+    overview_col2.metric(
         "Unrealized P/L",
         f"${portfolio_summary['total_unrealized_pl']:,.2f}"
     )
 
-    summary_col3.metric(
-        "Unrealized Return",
+    overview_col3.metric(
+        "Return",
         f"{portfolio_summary['total_unrealized_pl_percent']:,.2f}%"
     )
 
-    risk_col1, risk_col2 = st.columns(2)
-
-    risk_col1.metric(
+    overview_col4.metric(
         "Sharpe Ratio",
         f"{risk_metrics['sharpe_ratio']:,.2f}"
     )
 
-    risk_col2.metric(
+    overview_col5.metric(
         "Max Drawdown",
         f"{risk_metrics['max_drawdown_percent']:,.2f}%"
     )
