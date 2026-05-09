@@ -42,8 +42,31 @@ STRATEGY_OPTIONS = [
     "Custom"
 ]
 
-st.title("Portfolio Manager")
-st.write("Trade journal and performance dashboard.")
+st.sidebar.title("Portfolio Manager")
+
+page = st.sidebar.radio(
+    "Navigation",
+    [
+        "Dashboard",
+        "Trade Journal",
+        "Benchmarks",
+        "Data Tables"
+    ]
+)
+
+st.title(page)
+
+if page == "Dashboard":
+    st.write("Portfolio overview, market snapshot, performance charts, and risk metrics.")
+
+elif page == "Trade Journal":
+    st.write("Add, edit, delete, and review saved trades.")
+
+elif page == "Benchmarks":
+    st.write("Compare your trades against SPY and review trade strategy performance.")
+
+elif page == "Data Tables":
+    st.write("View raw market data and calculated analysis tables.")
 
 
 trades_df = load_trades(TRADES_FILE)
