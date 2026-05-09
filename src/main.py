@@ -242,13 +242,21 @@ else:
 st.subheader("Add a New Trade")
 
 with st.form("add_trade_form"):
-    ticker = st.text_input("Ticker Symbol", placeholder="AAPL")
-    shares = st.number_input("Shares", min_value=0.0, step=1.0)
-    buy_price = st.number_input("Buy Price", min_value=0.0, step=0.01)
-    buy_date = st.date_input("Buy Date")
+    st.write("Use this form to record a trade and the reasoning behind it.")
 
-    sell_price = st.number_input("Sell Price", min_value=0.0, step=0.01)
-    sell_date = st.date_input("Sell Date")
+    ticker = st.text_input("Ticker Symbol", placeholder="AAPL")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        shares = st.number_input("Shares", min_value=0.0, step=1.0)
+        buy_price = st.number_input("Buy Price", min_value=0.0, step=0.01)
+        buy_date = st.date_input("Buy Date")
+
+    with col2:
+        target_price = st.number_input("Target Price", min_value=0.0, step=0.01)
+        conviction = st.selectbox("Conviction Level", ["Low", "Medium", "High"])
+        status = st.selectbox("Status", ["Open", "Closed"])
 
     selected_strategy = st.selectbox(
         "Strategy Type",
@@ -260,7 +268,7 @@ with st.form("add_trade_form"):
     else:
         tag = selected_strategy
 
-        entry_reason = st.text_area(
+    entry_reason = st.text_area(
         "Reason for Entry",
         placeholder="Why are you entering this trade?"
     )
@@ -280,9 +288,20 @@ with st.form("add_trade_form"):
         f"Main Risk: {main_risk}\n"
         f"Exit Plan: {exit_plan}"
     )
-    conviction = st.selectbox("Conviction Level", ["Low", "Medium", "High"])
-    target_price = st.number_input("Target Price", min_value=0.0, step=0.01)
-    status = st.selectbox("Status", ["Open", "Closed"])
+
+    if status == "Closed":
+        st.write("Closed Trade Details")
+
+        sell_col1, sell_col2 = st.columns(2)
+
+        with sell_col1:
+            sell_price = st.number_input("Sell Price", min_value=0.0, step=0.01)
+
+        with sell_col2:
+            sell_date = st.date_input("Sell Date")
+    else:
+        sell_price = 0.0
+        sell_date = ""
 
     submitted = st.form_submit_button("Save Trade")
 
@@ -295,6 +314,9 @@ with st.form("add_trade_form"):
 
         elif buy_price <= 0:
             st.error("Please enter a valid buy price. Buy price must be greater than 0.")
+
+        elif selected_strategy == "Custom" and tag.strip() == "":
+            st.error("Please enter a custom strategy tag.")
 
         elif status == "Closed" and sell_price <= 0:
             st.error("Please enter a valid sell price. Sell price must be greater than 0 for closed trades.")
@@ -314,6 +336,7 @@ with st.form("add_trade_form"):
                 target_price=target_price,
                 status=status
             )
+
             save_trades(trades_df, TRADES_FILE)
             st.success("Trade added successfully!")
             st.rerun()
