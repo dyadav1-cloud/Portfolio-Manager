@@ -376,12 +376,70 @@ if not trades_df.empty:
                 min_value=0.0,
                 step=0.01,
                 value=float(selected_trade["sell_price"]) if selected_trade["sell_price"] != "" else 0.0
+            )if not trades_df.empty:
+    with st.expander("Edit a Trade"):
+        edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
+        selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
+
+        selected_trade = trades_df[
+            trades_df["trade_id"].astype(int) == selected_edit_id
+        ].iloc[0]
+
+        with st.form("edit_trade_form"):
+            st.write("Update the trade details and decision notes below.")
+
+            edit_ticker = st.text_input(
+                "Edit Ticker",
+                value=str(selected_trade["ticker"])
             )
 
-            edit_sell_date = st.date_input(
-                "Edit Sell Date",
-                value=pd.to_datetime(selected_trade["sell_date"]) if selected_trade["sell_date"] != "" else pd.Timestamp.today()
-            )
+            edit_col1, edit_col2 = st.columns(2)
+
+            with edit_col1:
+                edit_shares = st.number_input(
+                    "Edit Shares",
+                    min_value=0.0,
+                    step=1.0,
+                    value=float(selected_trade["shares"])
+                )
+
+                edit_buy_price = st.number_input(
+                    "Edit Buy Price",
+                    min_value=0.0,
+                    step=0.01,
+                    value=float(selected_trade["buy_price"])
+                )
+
+                edit_buy_date = st.date_input(
+                    "Edit Buy Date",
+                    value=pd.to_datetime(selected_trade["buy_date"])
+                )
+
+            with edit_col2:
+                edit_target_price = st.number_input(
+                    "Edit Target Price",
+                    min_value=0.0,
+                    step=0.01,
+                    value=float(selected_trade["target_price"])
+                    if str(selected_trade["target_price"]).strip() != ""
+                    else 0.0
+                )
+
+                edit_conviction = st.selectbox(
+                    "Edit Conviction Level",
+                    ["Low", "Medium", "High"],
+                    index=["Low", "Medium", "High"].index(selected_trade["conviction"])
+                    if selected_trade["conviction"] in ["Low", "Medium", "High"]
+                    else 1
+                )
+
+                edit_status = st.selectbox(
+                    "Edit Status",
+                    ["Open", "Closed"],
+                    index=["Open", "Closed"].index(selected_trade["status"])
+                    if selected_trade["status"] in ["Open", "Closed"]
+                    else 0
+                )
 
             current_tag = str(selected_trade["tag"])
 
@@ -397,32 +455,46 @@ if not trades_df.empty:
             )
 
             if edit_selected_strategy == "Custom":
-                edit_tag = st.text_input("Edit Custom Strategy Tag", value=current_tag)
+                edit_tag = st.text_input(
+                    "Edit Custom Strategy Tag",
+                    value=current_tag if current_tag not in STRATEGY_OPTIONS else ""
+                )
             else:
                 edit_tag = edit_selected_strategy
 
-            edit_thesis = st.text_area("Edit Investment Thesis", value=str(selected_trade["thesis"]))
-
-            edit_conviction = st.selectbox(
-                "Edit Conviction Level",
-                ["Low", "Medium", "High"],
-                index=["Low", "Medium", "High"].index(selected_trade["conviction"])
-                if selected_trade["conviction"] in ["Low", "Medium", "High"] else 1
+            edit_thesis = st.text_area(
+                "Edit Investment Thesis",
+                value=str(selected_trade["thesis"])
             )
 
-            edit_target_price = st.number_input(
-                "Edit Target Price",
-                min_value=0.0,
-                step=0.01,
-                value=float(selected_trade["target_price"]) if selected_trade["target_price"] != "" else 0.0
-            )
+            if edit_status == "Closed":
+                st.write("Closed Trade Details")
 
-            edit_status = st.selectbox(
-                "Edit Status",
-                ["Open", "Closed"],
-                index=["Open", "Closed"].index(selected_trade["status"])
-                if selected_trade["status"] in ["Open", "Closed"] else 0
-            )
+                edit_sell_col1, edit_sell_col2 = st.columns(2)
+
+                with edit_sell_col1:
+                    edit_sell_price = st.number_input(
+                        "Edit Sell Price",
+                        min_value=0.0,
+                        step=0.01,
+                        value=float(selected_trade["sell_price"])
+                        if str(selected_trade["sell_price"]).strip() != ""
+                        else 0.0
+                    )
+
+                with edit_sell_col2:
+                    if str(selected_trade["sell_date"]).strip() != "":
+                        edit_sell_date_value = pd.to_datetime(selected_trade["sell_date"])
+                    else:
+                        edit_sell_date_value = pd.Timestamp.today()
+
+                    edit_sell_date = st.date_input(
+                        "Edit Sell Date",
+                        value=edit_sell_date_value
+                    )
+            else:
+                edit_sell_price = 0.0
+                edit_sell_date = ""
 
             edit_submitted = st.form_submit_button("Save Changes")
 
@@ -435,6 +507,9 @@ if not trades_df.empty:
 
                 elif edit_buy_price <= 0:
                     st.error("Buy price must be greater than zero.")
+
+                elif edit_selected_strategy == "Custom" and edit_tag.strip() == "":
+                    st.error("Please enter a custom strategy tag.")
 
                 elif edit_status == "Closed" and edit_sell_price <= 0:
                     st.error("Closed trades need a sell price.")
@@ -455,6 +530,7 @@ if not trades_df.empty:
                         target_price=edit_target_price,
                         status=edit_status
                     )
+
                     save_trades(trades_df, TRADES_FILE)
                     st.success("Trade updated successfully!")
                     st.rerun()
