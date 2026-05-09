@@ -196,6 +196,8 @@ def plot_profit_loss_bar(position_df):
     fig.update_layout(
         xaxis_title="Ticker",
         yaxis_title="Unrealized P/L ($)",
+        showlegend=False,
+        height=420,
         margin=dict(l=20, r=20, t=60, b=20)
     )
 
