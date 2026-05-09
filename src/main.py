@@ -409,7 +409,27 @@ if not trades_df.empty:
                     else 0
                 )
 
-        
+        current_tag = str(selected_trade["tag"])
+
+        if current_tag in STRATEGY_OPTIONS:
+            default_strategy_index = STRATEGY_OPTIONS.index(current_tag)
+        else:
+            default_strategy_index = STRATEGY_OPTIONS.index("Custom")
+
+        edit_selected_strategy = st.selectbox(
+            "Edit Strategy Type",
+            STRATEGY_OPTIONS,
+            index=default_strategy_index
+        )
+
+        if edit_selected_strategy == "Custom":
+            edit_tag = st.text_input(
+                "Edit Custom Strategy Tag",
+                value=current_tag if current_tag not in STRATEGY_OPTIONS else ""
+            )
+        else:
+            edit_tag = edit_selected_strategy
+
 
 
 
