@@ -315,6 +315,11 @@ def calculate_risk_metrics(portfolio_history_df):
     
     history_df = portfolio_history_df.copy()
 
+    history_df["portfolio_value"] = pd.to_numeric(
+        history_df["portfolio_value"],
+        errors="coerce"
+    ).fillna(0)
+
     
 
 
