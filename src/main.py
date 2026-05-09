@@ -461,26 +461,26 @@ if not trades_df.empty:
                     value=edit_sell_date_value
                 )
 
-            else:
-                trades_df = edit_trade(
-                    trades_df=trades_df,
-                    trade_id=selected_edit_id,
-                    ticker=edit_ticker,
-                    shares=edit_shares,
-                    buy_price=edit_buy_price,
-                    buy_date=edit_buy_date,
-                    sell_price=edit_sell_price,
-                    sell_date=edit_sell_date,
-                    tag=edit_tag,
-                    thesis=edit_thesis,
-                    conviction=edit_conviction,
-                    target_price=edit_target_price,
-                    status=edit_status
-                )
+        else:
+            trades_df = edit_trade(
+                trades_df=trades_df,
+                trade_id=selected_edit_id,
+                ticker=edit_ticker,
+                shares=edit_shares,
+                buy_price=edit_buy_price,
+                buy_date=edit_buy_date,
+                sell_price=edit_sell_price,
+                sell_date=edit_sell_date,
+                tag=edit_tag,
+                thesis=edit_thesis,
+                conviction=edit_conviction,
+                target_price=edit_target_price,
+                status=edit_status
+            )
 
-                save_trades(trades_df, TRADES_FILE)
-                st.success("Trade updated successfully!")
-                st.rerun()
+            save_trades(trades_df, TRADES_FILE)
+            st.success("Trade updated successfully!")
+            st.rerun()
 
 
 
