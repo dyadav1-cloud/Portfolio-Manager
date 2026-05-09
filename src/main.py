@@ -264,8 +264,6 @@ if page == "Dashboard":
             tag_fig = plot_tag_performance_bar(tag_summary_df)
             st.plotly_chart(tag_fig, use_container_width=True)
 
-    
-    
     with history_col:
         st.subheader("Portfolio Over Time")
 
