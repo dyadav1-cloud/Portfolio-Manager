@@ -56,6 +56,9 @@ risk_metrics = {
     "sharpe_ratio": 0,
     "max_drawdown_percent": 0
 }
+market_snapshot_df = pd.DataFrame()
+
+market_snapshot_df = get_market_snapshot()
 
 if trades_df.empty:
     total_trades = 0
