@@ -435,7 +435,53 @@ if not trades_df.empty:
                 value=str(selected_trade["thesis"])
             )
         
-        
+        if edit_status == "Closed":
+            st.write("Closed Trade Details")
+
+            edit_sell_col1, edit_sell_col2 = st.columns(2)
+
+            with edit_sell_col1:
+                edit_sell_price = st.number_input(
+                    "Edit Sell Price",
+                    min_value=0.0,
+                    step=0.01,
+                    value=float(selected_trade["sell_price"])
+                    if str(selected_trade["sell_price"]).strip() != ""
+                    else 0.0
+                )
+
+            with edit_sell_col2:
+                if str(selected_trade["sell_date"]).strip() != "":
+                    edit_sell_date_value = pd.to_datetime(selected_trade["sell_date"])
+                else:
+                    edit_sell_date_value = pd.Timestamp.today()
+
+                edit_sell_date = st.date_input(
+                    "Edit Sell Date",
+                    value=edit_sell_date_value
+                )
+
+            else:
+                trades_df = edit_trade(
+                    trades_df=trades_df,
+                    trade_id=selected_edit_id,
+                    ticker=edit_ticker,
+                    shares=edit_shares,
+                    buy_price=edit_buy_price,
+                    buy_date=edit_buy_date,
+                    sell_price=edit_sell_price,
+                    sell_date=edit_sell_date,
+                    tag=edit_tag,
+                    thesis=edit_thesis,
+                    conviction=edit_conviction,
+                    target_price=edit_target_price,
+                    status=edit_status
+                )
+
+                save_trades(trades_df, TRADES_FILE)
+                st.success("Trade updated successfully!")
+                st.rerun()
+
 
 
 
