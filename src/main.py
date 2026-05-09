@@ -127,6 +127,18 @@ else:
         "Unrealized Return",
         f"{portfolio_summary['total_unrealized_pl_percent']:,.2f}%"
     )
+
+    risk_col1, risk_col2 = st.columns(2)
+
+    risk_col1.metric(
+        "Sharpe Ratio",
+        f"{risk_metrics['sharpe_ratio']:,.2f}"
+    )
+
+    risk_col2.metric(
+        "Max Drawdown",
+        f"{risk_metrics['max_drawdown_percent']:,.2f}%"
+    )
     
     display_columns = [
         "ticker",
