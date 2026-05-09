@@ -30,7 +30,7 @@ st.set_page_config(
     page_title="Portfolio Manager",
     page_icon="📈",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 TRADES_FILE = get_data_path("trades.csv")
@@ -100,6 +100,8 @@ else:
     total_trades = len(trades_df)
     unique_tickers = trades_df["ticker"].nunique()
     total_cost_basis = (trades_df["buy_price"] * trades_df["shares"]).sum()
+
+
 
 col1, col2, col3 = st.columns(3)
 
