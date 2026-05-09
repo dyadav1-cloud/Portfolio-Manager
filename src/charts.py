@@ -235,10 +235,19 @@ def plot_tag_performance_bar(tag_summary_df):
             errors="coerce"
         ).fillna(0)
 
+    chart_df["pl_status"] = chart_df["total_unrealized_pl"].apply(
+    lambda value: "Gain" if value >= 0 else "Loss"
+)
+
     fig = px.bar(
         chart_df,
         x="tag",
         y="total_unrealized_pl",
+        color="pl_status",
+        color_discrete_map={
+            "Gain": POSITIVE_COLOR,
+            "Loss": NEGATIVE_COLOR
+        },
         title="Unrealized Profit/Loss by Trade Tag",
         text="total_unrealized_pl",
         custom_data=[
@@ -265,9 +274,12 @@ def plot_tag_performance_bar(tag_summary_df):
     )
 
     fig.update_layout(
-        xaxis_title="Trade Tag",
-        yaxis_title="Unrealized P/L ($)",
-        margin=dict(l=20, r=20, t=60, b=20)
+    template="plotly",
+    xaxis_title="Trade Tag",
+    yaxis_title="Unrealized P/L ($)",
+    showlegend=False,
+    height=420,
+    margin=dict(l=20, r=20, t=60, b=20)
     )
 
     return fig
