@@ -293,6 +293,7 @@ if page == "Dashboard":
                 use_container_width=True
             )
 
+if page == "Trade Journal":
 st.subheader("Add a New Trade")
 
 with st.form("add_trade_form"):
