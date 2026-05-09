@@ -320,6 +320,9 @@ def calculate_risk_metrics(portfolio_history_df):
         errors="coerce"
     ).fillna(0)
 
+    # Daily return tells us how much the portfolio changed each day.
+    history_df["daily_return"] = history_df["portfolio_value"].pct_change()
+
     
 
 
