@@ -339,7 +339,27 @@ def calculate_risk_metrics(portfolio_history_df):
             daily_returns.mean() / daily_returns.std()
         ) * (252 ** 0.5)
 
-    
+    # Running peak tracks the highest portfolio value reached up to each date.
+    history_df["running_peak"] = history_df["portfolio_value"].cummax()
+
+    history_df["drawdown"] = (
+        history_df["portfolio_value"] - history_df["running_peak"]
+    ) / history_df["running_peak"]
+
+    history_df["drawdown"] = (
+        history_df["drawdown"]
+        .replace([float("inf"), -float("inf")], 0)
+        .fillna(0)
+    )
+
+    max_drawdown_percent = history_df["drawdown"].min() * 100
+
+    return {
+        "sharpe_ratio": sharpe_ratio,
+        "max_drawdown_percent": max_drawdown_percent
+    }
+
+
 
 
 
