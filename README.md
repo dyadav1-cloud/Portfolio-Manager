@@ -62,3 +62,6 @@ Install the required packages:
 ```bash
 pip install -r requirements.txt
 
+## Run the production version of the app
+
+streamlit run dist/main.py
