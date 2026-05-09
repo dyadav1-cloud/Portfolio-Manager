@@ -250,20 +250,9 @@ with st.form("add_trade_form"):
     sell_price = st.number_input("Sell Price", min_value=0.0, step=0.01)
     sell_date = st.date_input("Sell Date")
 
-    strategy_options = [
-    "Long-term hold",
-    "Momentum play",
-    "Dividend income",
-    "Earnings play",
-    "Swing trade",
-    "Speculative bet",
-    "Hedge",
-    "Index alternative",
-    "Custom"
-    ]
     selected_strategy = st.selectbox(
         "Strategy Type",
-        strategy_options
+        STRATEGY_OPTIONS
     )
 
     if selected_strategy == "Custom":
