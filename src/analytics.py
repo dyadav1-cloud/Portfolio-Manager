@@ -323,6 +323,22 @@ def calculate_risk_metrics(portfolio_history_df):
     # Daily return tells us how much the portfolio changed each day.
     history_df["daily_return"] = history_df["portfolio_value"].pct_change()
 
+    # Remove missing values and infinite values.
+    daily_returns = (
+        history_df["daily_return"]
+        .replace([float("inf"), -float("inf")], pd.NA)
+        .dropna()
+    )
+
+    if daily_returns.empty or daily_returns.std() == 0:
+        sharpe_ratio = 0
+
+    else:
+        # 252 is the approximate number of trading days in a year.
+        sharpe_ratio = (
+            daily_returns.mean() / daily_returns.std()
+        ) * (252 ** 0.5)
+
     
 
 
