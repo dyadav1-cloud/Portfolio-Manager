@@ -60,7 +60,8 @@ The SPY benchmark comparison also helps users evaluate whether their individual 
 Install the required packages:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt 
+```
 
 Run the production version of the app:
 
