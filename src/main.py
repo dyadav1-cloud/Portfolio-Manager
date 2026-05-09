@@ -34,7 +34,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-apply_custom_style()
+# apply_custom_style()
 
 TRADES_FILE = get_data_path("trades.csv")
 
