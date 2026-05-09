@@ -301,8 +301,22 @@ def calculate_spy_comparison(trades_df, price_history_df):
     return pd.DataFrame(comparison_rows)
 
 def calculate_risk_metrics(portfolio_history_df):
+    """
+    Calculate risk metrics from the portfolio history.
+
+    Sharpe ratio measures return compared to volatility.
+    Max drawdown measures the largest percentage drop from a previous peak.
+    """
+    if portfolio_history_df.empty or "portfolio_value" not in portfolio_history_df.columns:
+        return {
+            "sharpe_ratio": 0,
+            "max_drawdown_percent": 0
+        }
+    
+    history_df = portfolio_history_df.copy()
 
     
+
 
 
     
