@@ -8,7 +8,8 @@ from analytics import (
     calculate_position_metrics,
     calculate_tag_summary,
     calculate_portfolio_history,
-    calculate_spy_comparison
+    calculate_spy_comparison,
+    calculate_risk_metrics
 )
 from charts import (
     plot_allocation_donut,
