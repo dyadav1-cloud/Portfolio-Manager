@@ -130,168 +130,168 @@ if page == "Dashboard":
             use_container_width=True
         )
 
-st.subheader("Portfolio Overview")
+    st.subheader("Portfolio Overview")
 
-if trades_df.empty:
-    st.info("Add trades to see Portfolio Overview.")
-else:
-    unique_tickers_list = (
-        trades_df["ticker"]
-        .dropna()
-        .astype(str)
-        .str.strip()
-        .loc[lambda tickers: tickers != ""]
-        .unique()
-        .tolist()
-    )
-    price_df = get_prices_for_tickers(unique_tickers_list)
-    
-    position_df = calculate_position_metrics(trades_df, price_df)
-    portfolio_summary = calculate_portfolio_summary(position_df)
-    tag_summary_df = calculate_tag_summary(position_df)
+    if trades_df.empty:
+        st.info("Add trades to see Portfolio Overview.")
+    else:
+        unique_tickers_list = (
+            trades_df["ticker"]
+            .dropna()
+            .astype(str)
+            .str.strip()
+            .loc[lambda tickers: tickers != ""]
+            .unique()
+            .tolist()
+        )
+        price_df = get_prices_for_tickers(unique_tickers_list)
+        
+        position_df = calculate_position_metrics(trades_df, price_df)
+        portfolio_summary = calculate_portfolio_summary(position_df)
+        tag_summary_df = calculate_tag_summary(position_df)
 
-    earliest_buy_date = pd.to_datetime(trades_df["buy_date"], errors="coerce").min()
+        earliest_buy_date = pd.to_datetime(trades_df["buy_date"], errors="coerce").min()
 
-if pd.isna(earliest_buy_date):
-    portfolio_history_df = pd.DataFrame()
-else:
-    history_tickers_list = unique_tickers_list.copy()
+    if pd.isna(earliest_buy_date):
+        portfolio_history_df = pd.DataFrame()
+    else:
+        history_tickers_list = unique_tickers_list.copy()
 
-    if "SPY" not in history_tickers_list:
-        history_tickers_list.append("SPY")
+        if "SPY" not in history_tickers_list:
+            history_tickers_list.append("SPY")
 
-    price_history_df = get_historical_prices(
-        history_tickers_list,
-        earliest_buy_date.strftime("%Y-%m-%d")
-    )
+        price_history_df = get_historical_prices(
+            history_tickers_list,
+            earliest_buy_date.strftime("%Y-%m-%d")
+        )
 
-    portfolio_history_df = calculate_portfolio_history(
+        portfolio_history_df = calculate_portfolio_history(
+            trades_df,
+            price_history_df
+        )
+
+        spy_comparison_df = calculate_spy_comparison(
         trades_df,
         price_history_df
-    )
+        )
 
-    spy_comparison_df = calculate_spy_comparison(
-    trades_df,
-    price_history_df
-    )
+        risk_metrics = calculate_risk_metrics(portfolio_history_df)
 
-    risk_metrics = calculate_risk_metrics(portfolio_history_df)
+        overview_col1, overview_col2, overview_col3, overview_col4, overview_col5 = st.columns(5)
 
-    overview_col1, overview_col2, overview_col3, overview_col4, overview_col5 = st.columns(5)
+        overview_col1.metric(
+            "Portfolio Value",
+            f"${portfolio_summary['total_current_value']:,.2f}"
+        )
 
-    overview_col1.metric(
-        "Portfolio Value",
-        f"${portfolio_summary['total_current_value']:,.2f}"
-    )
+        overview_col2.metric(
+            "Unrealized P/L",
+            f"${portfolio_summary['total_unrealized_pl']:,.2f}"
+        )
 
-    overview_col2.metric(
-        "Unrealized P/L",
-        f"${portfolio_summary['total_unrealized_pl']:,.2f}"
-    )
+        overview_col3.metric(
+            "Return",
+            f"{portfolio_summary['total_unrealized_pl_percent']:,.2f}%"
+        )
 
-    overview_col3.metric(
-        "Return",
-        f"{portfolio_summary['total_unrealized_pl_percent']:,.2f}%"
-    )
+        overview_col4.metric(
+            "Sharpe Ratio",
+            f"{risk_metrics['sharpe_ratio']:,.2f}"
+        )
 
-    overview_col4.metric(
-        "Sharpe Ratio",
-        f"{risk_metrics['sharpe_ratio']:,.2f}"
-    )
+        overview_col5.metric(
+            "Max Drawdown",
+            f"{risk_metrics['max_drawdown_percent']:,.2f}%"
+        )
 
-    overview_col5.metric(
-        "Max Drawdown",
-        f"{risk_metrics['max_drawdown_percent']:,.2f}%"
-    )
+        st.divider()
+        
+        display_columns = [
+            "ticker",
+            "shares",
+            "buy_price",
+            "latest_price",
+            "cost_basis",
+            "current_value",
+            "unrealized_pl",
+            "unrealized_pl_percent",
+            "tag",
+            "conviction",
+            "status"
+        ]
 
-    st.divider()
-    
-    display_columns = [
-        "ticker",
-        "shares",
-        "buy_price",
-        "latest_price",
-        "cost_basis",
-        "current_value",
-        "unrealized_pl",
-        "unrealized_pl_percent",
-        "tag",
-        "conviction",
-        "status"
-    ]
-
-    st.dataframe(
-        position_df[display_columns],
-        use_container_width=True
-    )
-
-chart_col1, chart_col2 = st.columns(2)
-
-with chart_col1:
-    st.subheader("Portfolio Allocation")
-    allocation_fig = plot_allocation_donut(position_df)
-    st.plotly_chart(allocation_fig, use_container_width=True)
-
-with chart_col2:
-    st.subheader("Profit/Loss by Ticker")
-    pl_fig = plot_profit_loss_bar(position_df)
-    st.plotly_chart(pl_fig, use_container_width=True)
-
-tag_col, history_col = st.columns(2)
-
-with tag_col:
-    st.subheader("Performance by Trade Tag")
-
-    if tag_summary_df.empty:
-        st.info("Add tags to your trades to see tag-based performance.")
-    else:
-        tag_fig = plot_tag_performance_bar(tag_summary_df)
-        st.plotly_chart(tag_fig, use_container_width=True)
-
-        with st.expander("View tag performance data"):
-            st.dataframe(
-                tag_summary_df,
-                use_container_width=True
-            )
-
-with history_col:
-    st.subheader("Portfolio Over Time")
-
-    if portfolio_history_df.empty:
-        st.info("Add valid buy dates to see portfolio performance over time.")
-    else:
-        history_fig = plot_portfolio_history_line(portfolio_history_df)
-        st.plotly_chart(history_fig, use_container_width=True)
-
-with st.expander("Raw market data"):
-    st.dataframe(price_df, use_container_width=True)
-
-st.subheader("SPY Benchmark Comparison")
-
-if spy_comparison_df.empty:
-    st.info("SPY comparison will appear once valid trades and price history are available.")
-else:
-    spy_fig = plot_spy_comparison_bar(spy_comparison_df)
-    st.plotly_chart(spy_fig, use_container_width=True)
-
-    display_spy_columns = [
-        "ticker",
-        "buy_date",
-        "actual_cost_basis",
-        "actual_current_value",
-        "actual_pl",
-        "actual_return_percent",
-        "spy_current_value",
-        "spy_pl",
-        "spy_return_percent",
-        "difference_vs_spy"
-    ]
-
-    with st.expander("View SPY comparison data"):
         st.dataframe(
-            spy_comparison_df[display_spy_columns],
+            position_df[display_columns],
             use_container_width=True
         )
+
+    chart_col1, chart_col2 = st.columns(2)
+
+    with chart_col1:
+        st.subheader("Portfolio Allocation")
+        allocation_fig = plot_allocation_donut(position_df)
+        st.plotly_chart(allocation_fig, use_container_width=True)
+
+    with chart_col2:
+        st.subheader("Profit/Loss by Ticker")
+        pl_fig = plot_profit_loss_bar(position_df)
+        st.plotly_chart(pl_fig, use_container_width=True)
+
+    tag_col, history_col = st.columns(2)
+
+    with tag_col:
+        st.subheader("Performance by Trade Tag")
+
+        if tag_summary_df.empty:
+            st.info("Add tags to your trades to see tag-based performance.")
+        else:
+            tag_fig = plot_tag_performance_bar(tag_summary_df)
+            st.plotly_chart(tag_fig, use_container_width=True)
+
+            with st.expander("View tag performance data"):
+                st.dataframe(
+                    tag_summary_df,
+                    use_container_width=True
+                )
+
+    with history_col:
+        st.subheader("Portfolio Over Time")
+
+        if portfolio_history_df.empty:
+            st.info("Add valid buy dates to see portfolio performance over time.")
+        else:
+            history_fig = plot_portfolio_history_line(portfolio_history_df)
+            st.plotly_chart(history_fig, use_container_width=True)
+
+    with st.expander("Raw market data"):
+        st.dataframe(price_df, use_container_width=True)
+
+    st.subheader("SPY Benchmark Comparison")
+
+    if spy_comparison_df.empty:
+        st.info("SPY comparison will appear once valid trades and price history are available.")
+    else:
+        spy_fig = plot_spy_comparison_bar(spy_comparison_df)
+        st.plotly_chart(spy_fig, use_container_width=True)
+
+        display_spy_columns = [
+            "ticker",
+            "buy_date",
+            "actual_cost_basis",
+            "actual_current_value",
+            "actual_pl",
+            "actual_return_percent",
+            "spy_current_value",
+            "spy_pl",
+            "spy_return_percent",
+            "difference_vs_spy"
+        ]
+
+        with st.expander("View SPY comparison data"):
+            st.dataframe(
+                spy_comparison_df[display_spy_columns],
+                use_container_width=True
+            )
 
 st.subheader("Add a New Trade")
 
