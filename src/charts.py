@@ -347,10 +347,17 @@ def plot_portfolio_history_line(portfolio_history_df):
     )
 
     fig.update_layout(
-        xaxis_title="Date",
-        yaxis_title="Value ($)",
-        margin=dict(l=20, r=20, t=60, b=20),
-        legend_title_text=""
+    template="plotly",
+    xaxis_title="Date",
+    yaxis_title="Value ($)",
+    height=420,
+    margin=dict(l=20, r=20, t=60, b=20),
+    legend_title_text=""
+    )
+
+    fig.update_traces(
+    line=dict(width=3),
+    marker=dict(size=6)
     )
 
     return fig
