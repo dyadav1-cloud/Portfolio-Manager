@@ -26,7 +26,12 @@ def get_data_path(filename: str) -> str:
     '''Returns the path to an asset file, given its filename.'''
     return os.path.join(APP_PATH, "data", filename)
 
-st.set_page_config(page_title="Portfolio Manager", page_icon="📈", layout="wide")
+st.set_page_config(
+    page_title="Portfolio Manager",
+    page_icon="📈",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
 TRADES_FILE = get_data_path("trades.csv")
 
