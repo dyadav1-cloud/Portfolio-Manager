@@ -266,6 +266,7 @@ if page == "Dashboard":
     with st.expander("Raw market data"):
         st.dataframe(price_df, use_container_width=True)
 
+if page == "Benchmarks":
     st.subheader("SPY Benchmark Comparison")
 
     if spy_comparison_df.empty:
