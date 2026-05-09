@@ -107,8 +107,11 @@ def plot_allocation_donut(position_df):
     )
 
     fig.update_layout(
-        showlegend=True,
-        margin=dict(l=20, r=20, t=60, b=20)
+    template="plotly",
+    showlegend=True,
+    height=420,
+    margin=dict(l=20, r=20, t=60, b=20),
+    legend_title_text=""
     )
 
     return fig
