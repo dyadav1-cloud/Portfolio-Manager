@@ -103,11 +103,12 @@ def plot_allocation_donut(position_df):
     )
 
     fig = px.pie(
-        allocation_df,
-        names="ticker",
-        values="current_value",
-        hole=0.45,
-        title="Portfolio Allocation"
+    allocation_df,
+    names="ticker",
+    values="current_value",
+    hole=0.55,
+    title="Portfolio Allocation",
+    color_discrete_sequence=CHART_COLORS
     )
 
     # Manually attach the hover data to the chart.
