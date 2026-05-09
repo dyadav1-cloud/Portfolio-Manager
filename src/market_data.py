@@ -155,5 +155,46 @@ def get_market_snapshot():
 
     snapshot_rows = []
 
-    
+    for ticker, market_name in market_tickers.items():
+        try:
+            market_data = yf.download(
+                ticker,
+                period="5d",
+                interval="1d",
+                progress=False,
+                auto_adjust=False
+            )
+
+            if market_data.empty:
+                continue
+
+            close_prices = market_data["Close"].dropna()
+
+            if close_prices.empty or len(close_prices) < 2:
+                continue
+
+            latest_price = close_prices.iloc[-1]
+            first_price = close_prices.iloc[0]
+
+            if hasattr(latest_price, "iloc"):
+                latest_price = latest_price.iloc[0]
+
+            if hasattr(first_price, "iloc"):
+                first_price = first_price.iloc[0]
+
+            five_day_return = ((latest_price - first_price) / first_price) * 100
+
+            snapshot_rows.append(
+                {
+                    "ticker": ticker,
+                    "market": market_name,
+                    "latest_price": round(float(latest_price), 2),
+                    "five_day_return_percent": round(float(five_day_return), 2)
+                }
+            )
+
+        except Exception:
+            continue
+
+    return pd.DataFrame(snapshot_rows)
 
