@@ -419,7 +419,7 @@ if not trades_df.empty:
 
 
 if not trades_df.empty:
-    with st.expander("Edit a Trade"):
+    with st.expander("Delete a Trade"):
         st.subheader("Delete a Trade")
 
         trade_ids = trades_df["trade_id"].tolist()
