@@ -2,7 +2,7 @@ import streamlit as st
 import os
 import pandas as pd
 from data_manager import load_trades, save_trades, add_trade, delete_trade, edit_trade
-from market_data import get_prices_for_tickers, get_historical_prices
+from market_data import get_prices_for_tickers, get_historical_prices, get_market_snapshot
 from analytics import (
     calculate_portfolio_summary,
     calculate_position_metrics,
