@@ -316,108 +316,108 @@ elif page == "Trade Journal":
     )
 
     with add_tab:
-    st.subheader("Add a New Trade")
+        st.subheader("Add a New Trade")
 
-    with st.form("add_trade_form"):
-        st.write("Use this form to record a trade and the reasoning behind it.")
+        with st.form("add_trade_form"):
+            st.write("Use this form to record a trade and the reasoning behind it.")
 
-        ticker = st.text_input("Ticker Symbol", placeholder="AAPL")
+            ticker = st.text_input("Ticker Symbol", placeholder="AAPL")
 
-        col1, col2 = st.columns(2)
+            col1, col2 = st.columns(2)
 
-        with col1:
-            shares = st.number_input("Shares", min_value=0.0, step=1.0)
-            buy_price = st.number_input("Buy Price", min_value=0.0, step=0.01)
-            buy_date = st.date_input("Buy Date")
+            with col1:
+                shares = st.number_input("Shares", min_value=0.0, step=1.0)
+                buy_price = st.number_input("Buy Price", min_value=0.0, step=0.01)
+                buy_date = st.date_input("Buy Date")
 
-        with col2:
-            target_price = st.number_input("Target Price", min_value=0.0, step=0.01)
-            conviction = st.selectbox("Conviction Level", ["Low", "Medium", "High"])
-            status = st.selectbox("Status", ["Open", "Closed"])
+            with col2:
+                target_price = st.number_input("Target Price", min_value=0.0, step=0.01)
+                conviction = st.selectbox("Conviction Level", ["Low", "Medium", "High"])
+                status = st.selectbox("Status", ["Open", "Closed"])
 
-        selected_strategy = st.selectbox(
-            "Strategy Type",
-            STRATEGY_OPTIONS
-        )
+            selected_strategy = st.selectbox(
+                "Strategy Type",
+                STRATEGY_OPTIONS
+            )
 
-        if selected_strategy == "Custom":
-            tag = st.text_input("Custom Strategy Tag", placeholder="Enter your own tag")
-        else:
-            tag = selected_strategy
-
-        entry_reason = st.text_area(
-            "Reason for Entry",
-            placeholder="Why are you entering this trade?"
-        )
-
-        main_risk = st.text_area(
-            "Main Risk",
-            placeholder="What could go wrong with this trade?"
-        )
-
-        exit_plan = st.text_area(
-            "Exit Plan",
-            placeholder="What would make you sell or close this trade?"
-        )
-
-        thesis = (
-            f"Reason for Entry: {entry_reason}\n"
-            f"Main Risk: {main_risk}\n"
-            f"Exit Plan: {exit_plan}"
-        )
-
-        if status == "Closed":
-            st.write("Closed Trade Details")
-
-            sell_col1, sell_col2 = st.columns(2)
-
-            with sell_col1:
-                sell_price = st.number_input("Sell Price", min_value=0.0, step=0.01)
-
-            with sell_col2:
-                sell_date = st.date_input("Sell Date")
-        else:
-            sell_price = 0.0
-            sell_date = ""
-
-        submitted = st.form_submit_button("Save Trade")
-
-        if submitted:
-            if ticker.strip() == "":
-                st.error("Please enter a ticker symbol.")
-
-            elif shares <= 0:
-                st.error("Please enter a valid number of shares. Shares must be greater than 0.")
-
-            elif buy_price <= 0:
-                st.error("Please enter a valid buy price. Buy price must be greater than 0.")
-
-            elif selected_strategy == "Custom" and tag.strip() == "":
-                st.error("Please enter a custom strategy tag.")
-
-            elif status == "Closed" and sell_price <= 0:
-                st.error("Please enter a valid sell price. Sell price must be greater than 0 for closed trades.")
-
+            if selected_strategy == "Custom":
+                tag = st.text_input("Custom Strategy Tag", placeholder="Enter your own tag")
             else:
-                trades_df = add_trade(
-                    trades_df=trades_df,
-                    ticker=ticker,
-                    shares=shares,
-                    buy_price=buy_price,
-                    buy_date=buy_date,
-                    sell_price=sell_price,
-                    sell_date=sell_date,
-                    tag=tag,
-                    thesis=thesis,
-                    conviction=conviction,
-                    target_price=target_price,
-                    status=status
-                )
+                tag = selected_strategy
 
-                save_trades(trades_df, TRADES_FILE)
-                st.success("Trade added successfully!")
-                st.rerun()
+            entry_reason = st.text_area(
+                "Reason for Entry",
+                placeholder="Why are you entering this trade?"
+            )
 
+            main_risk = st.text_area(
+                "Main Risk",
+                placeholder="What could go wrong with this trade?"
+            )
+
+            exit_plan = st.text_area(
+                "Exit Plan",
+                placeholder="What would make you sell or close this trade?"
+            )
+
+            thesis = (
+                f"Reason for Entry: {entry_reason}\n"
+                f"Main Risk: {main_risk}\n"
+                f"Exit Plan: {exit_plan}"
+            )
+
+            if status == "Closed":
+                st.write("Closed Trade Details")
+
+                sell_col1, sell_col2 = st.columns(2)
+
+                with sell_col1:
+                    sell_price = st.number_input("Sell Price", min_value=0.0, step=0.01)
+
+                with sell_col2:
+                    sell_date = st.date_input("Sell Date")
+            else:
+                sell_price = 0.0
+                sell_date = ""
+
+            submitted = st.form_submit_button("Save Trade")
+
+            if submitted:
+                if ticker.strip() == "":
+                    st.error("Please enter a ticker symbol.")
+
+                elif shares <= 0:
+                    st.error("Please enter a valid number of shares. Shares must be greater than 0.")
+
+                elif buy_price <= 0:
+                    st.error("Please enter a valid buy price. Buy price must be greater than 0.")
+
+                elif selected_strategy == "Custom" and tag.strip() == "":
+                    st.error("Please enter a custom strategy tag.")
+
+                elif status == "Closed" and sell_price <= 0:
+                    st.error("Please enter a valid sell price. Sell price must be greater than 0 for closed trades.")
+
+                else:
+                    trades_df = add_trade(
+                        trades_df=trades_df,
+                        ticker=ticker,
+                        shares=shares,
+                        buy_price=buy_price,
+                        buy_date=buy_date,
+                        sell_price=sell_price,
+                        sell_date=sell_date,
+                        tag=tag,
+                        thesis=thesis,
+                        conviction=conviction,
+                        target_price=target_price,
+                        status=status
+                    )
+
+                    save_trades(trades_df, TRADES_FILE)
+                    st.success("Trade added successfully!")
+                    st.rerun()
+    
     st.subheader("Saved Trades")
     st.dataframe(trades_df)
 
