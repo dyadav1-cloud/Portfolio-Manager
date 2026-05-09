@@ -63,8 +63,17 @@ def apply_custom_style():
             border-radius: 12px;
         }
 
-        
+        [data-testid="stExpander"] {
+            border: 1px solid #273244;
+            border-radius: 16px;
+            background-color: rgba(17, 24, 39, 0.55);
+        }
 
-        
-        """
+        .block-container {
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
     )
