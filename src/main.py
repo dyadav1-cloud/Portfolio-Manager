@@ -360,130 +360,148 @@ if not trades_df.empty:
                 "Edit Ticker",
                 value=str(selected_trade["ticker"])
             )
-        
-        edit_col1, edit_col2 = st.columns(2)
 
-        with edit_col1:
-            edit_shares = st.number_input(
-                "Edit Shares",
-                min_value=0.0,
-                step=1.0,
-                value=float(selected_trade["shares"])
-            )
+            edit_col1, edit_col2 = st.columns(2)
 
-            edit_buy_price = st.number_input(
-                "Edit Buy Price",
-                min_value=0.0,
-                step=0.01,
-                value=float(selected_trade["buy_price"])
-            )
+            with edit_col1:
+                edit_shares = st.number_input(
+                    "Edit Shares",
+                    min_value=0.0,
+                    step=1.0,
+                    value=float(selected_trade["shares"])
+                )
 
-            edit_buy_date = st.date_input(
-                "Edit Buy Date",
-                value=pd.to_datetime(selected_trade["buy_date"])
-            )
-
-        with edit_col2:
-            edit_target_price = st.number_input(
-                "Edit Target Price",
-                min_value=0.0,
-                step=0.01,
-                value=float(selected_trade["target_price"])
-                if str(selected_trade["target_price"]).strip() != ""
-                else 0.0
-            )
-
-            edit_conviction = st.selectbox(
-                "Edit Conviction Level",
-                ["Low", "Medium", "High"],
-                index=["Low", "Medium", "High"].index(selected_trade["conviction"])
-                if selected_trade["conviction"] in ["Low", "Medium", "High"]
-                else 1
-            )
-
-            edit_status = st.selectbox(
-                "Edit Status",
-                ["Open", "Closed"],
-                index=["Open", "Closed"].index(selected_trade["status"])
-                if selected_trade["status"] in ["Open", "Closed"]
-                else 0
-            )
-
-        current_tag = str(selected_trade["tag"])
-
-        if current_tag in STRATEGY_OPTIONS:
-            default_strategy_index = STRATEGY_OPTIONS.index(current_tag)
-        else:
-            default_strategy_index = STRATEGY_OPTIONS.index("Custom")
-
-        edit_selected_strategy = st.selectbox(
-            "Edit Strategy Type",
-            STRATEGY_OPTIONS,
-            index=default_strategy_index
-        )
-
-        if edit_selected_strategy == "Custom":
-            edit_tag = st.text_input(
-                "Edit Custom Strategy Tag",
-                value=current_tag if current_tag not in STRATEGY_OPTIONS else ""
-            )
-        else:
-            edit_tag = edit_selected_strategy
-        
-        edit_thesis = st.text_area(
-                "Edit Investment Thesis",
-                value=str(selected_trade["thesis"])
-            )
-        
-        if edit_status == "Closed":
-            st.write("Closed Trade Details")
-
-            edit_sell_col1, edit_sell_col2 = st.columns(2)
-
-            with edit_sell_col1:
-                edit_sell_price = st.number_input(
-                    "Edit Sell Price",
+                edit_buy_price = st.number_input(
+                    "Edit Buy Price",
                     min_value=0.0,
                     step=0.01,
-                    value=float(selected_trade["sell_price"])
-                    if str(selected_trade["sell_price"]).strip() != ""
+                    value=float(selected_trade["buy_price"])
+                )
+
+                edit_buy_date = st.date_input(
+                    "Edit Buy Date",
+                    value=pd.to_datetime(selected_trade["buy_date"])
+                )
+
+            with edit_col2:
+                edit_target_price = st.number_input(
+                    "Edit Target Price",
+                    min_value=0.0,
+                    step=0.01,
+                    value=float(selected_trade["target_price"])
+                    if str(selected_trade["target_price"]).strip() != ""
                     else 0.0
                 )
 
-            with edit_sell_col2:
-                if str(selected_trade["sell_date"]).strip() != "":
-                    edit_sell_date_value = pd.to_datetime(selected_trade["sell_date"])
-                else:
-                    edit_sell_date_value = pd.Timestamp.today()
-
-                edit_sell_date = st.date_input(
-                    "Edit Sell Date",
-                    value=edit_sell_date_value
+                edit_conviction = st.selectbox(
+                    "Edit Conviction Level",
+                    ["Low", "Medium", "High"],
+                    index=["Low", "Medium", "High"].index(selected_trade["conviction"])
+                    if selected_trade["conviction"] in ["Low", "Medium", "High"]
+                    else 1
                 )
 
-        else:
-            trades_df = edit_trade(
-                trades_df=trades_df,
-                trade_id=selected_edit_id,
-                ticker=edit_ticker,
-                shares=edit_shares,
-                buy_price=edit_buy_price,
-                buy_date=edit_buy_date,
-                sell_price=edit_sell_price,
-                sell_date=edit_sell_date,
-                tag=edit_tag,
-                thesis=edit_thesis,
-                conviction=edit_conviction,
-                target_price=edit_target_price,
-                status=edit_status
+                edit_status = st.selectbox(
+                    "Edit Status",
+                    ["Open", "Closed"],
+                    index=["Open", "Closed"].index(selected_trade["status"])
+                    if selected_trade["status"] in ["Open", "Closed"]
+                    else 0
+                )
+
+            current_tag = str(selected_trade["tag"])
+
+            if current_tag in STRATEGY_OPTIONS:
+                default_strategy_index = STRATEGY_OPTIONS.index(current_tag)
+            else:
+                default_strategy_index = STRATEGY_OPTIONS.index("Custom")
+
+            edit_selected_strategy = st.selectbox(
+                "Edit Strategy Type",
+                STRATEGY_OPTIONS,
+                index=default_strategy_index
             )
 
-            save_trades(trades_df, TRADES_FILE)
-            st.success("Trade updated successfully!")
-            st.rerun()
+            if edit_selected_strategy == "Custom":
+                edit_tag = st.text_input(
+                    "Edit Custom Strategy Tag",
+                    value=current_tag if current_tag not in STRATEGY_OPTIONS else ""
+                )
+            else:
+                edit_tag = edit_selected_strategy
 
+            edit_thesis = st.text_area(
+                "Edit Investment Thesis",
+                value=str(selected_trade["thesis"])
+            )
 
+            if edit_status == "Closed":
+                st.write("Closed Trade Details")
 
+                edit_sell_col1, edit_sell_col2 = st.columns(2)
+
+                with edit_sell_col1:
+                    edit_sell_price = st.number_input(
+                        "Edit Sell Price",
+                        min_value=0.0,
+                        step=0.01,
+                        value=float(selected_trade["sell_price"])
+                        if str(selected_trade["sell_price"]).strip() != ""
+                        else 0.0
+                    )
+
+                with edit_sell_col2:
+                    if str(selected_trade["sell_date"]).strip() != "":
+                        edit_sell_date_value = pd.to_datetime(selected_trade["sell_date"])
+                    else:
+                        edit_sell_date_value = pd.Timestamp.today()
+
+                    edit_sell_date = st.date_input(
+                        "Edit Sell Date",
+                        value=edit_sell_date_value
+                    )
+            else:
+                edit_sell_price = 0.0
+                edit_sell_date = ""
+
+            edit_submitted = st.form_submit_button("Save Changes")
+
+            if edit_submitted:
+                if edit_ticker.strip() == "":
+                    st.error("Please enter a ticker symbol.")
+
+                elif edit_shares <= 0:
+                    st.error("Shares must be greater than zero.")
+
+                elif edit_buy_price <= 0:
+                    st.error("Buy price must be greater than zero.")
+
+                elif edit_selected_strategy == "Custom" and edit_tag.strip() == "":
+                    st.error("Please enter a custom strategy tag.")
+
+                elif edit_status == "Closed" and edit_sell_price <= 0:
+                    st.error("Closed trades need a sell price.")
+
+                else:
+                    trades_df = edit_trade(
+                        trades_df=trades_df,
+                        trade_id=selected_edit_id,
+                        ticker=edit_ticker,
+                        shares=edit_shares,
+                        buy_price=edit_buy_price,
+                        buy_date=edit_buy_date,
+                        sell_price=edit_sell_price,
+                        sell_date=edit_sell_date,
+                        tag=edit_tag,
+                        thesis=edit_thesis,
+                        conviction=edit_conviction,
+                        target_price=edit_target_price,
+                        status=edit_status
+                    )
+
+                    save_trades(trades_df, TRADES_FILE)
+                    st.success("Trade updated successfully!")
+                    st.rerun()
 
 
 if not trades_df.empty:
