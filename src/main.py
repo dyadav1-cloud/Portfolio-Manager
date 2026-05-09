@@ -40,6 +40,10 @@ position_df = pd.DataFrame()
 tag_summary_df = pd.DataFrame()
 portfolio_history_df = pd.DataFrame()
 spy_comparison_df = pd.DataFrame()
+risk_metrics = {
+    "sharpe_ratio": 0,
+    "max_drawdown_percent": 0
+}
 
 if trades_df.empty:
     total_trades = 0
