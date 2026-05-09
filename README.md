@@ -65,3 +65,28 @@ pip install -r requirements.txt
 ## Run the production version of the app
 
 streamlit run dist/main.py
+
+## File Structure
+
+Portfolio-Manager/
+├── README.md
+├── requirements.txt
+├── demo.mp4
+├── src/
+│   ├── main.py
+│   ├── data_manager.py
+│   ├── market_data.py
+│   ├── analytics.py
+│   ├── charts.py
+│   ├── style.py
+│   └── data/
+│       └── trades.csv
+└── dist/
+    ├── main.py
+    ├── data_manager.py
+    ├── market_data.py
+    ├── analytics.py
+    ├── charts.py
+    ├── style.py
+    └── data/
+        └── trades.csv
