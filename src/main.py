@@ -418,8 +418,12 @@ elif page == "Trade Journal":
                     st.success("Trade added successfully!")
                     st.rerun()
     
-    st.subheader("Saved Trades")
-    st.dataframe(trades_df)
+    with saved_tab:
+        st.subheader("Saved Trades")
+        if trades_df.empty:
+            st.info("No trades saved yet.")
+        else:
+            st.dataframe(trades_df, use_container_width=True)
 
     with manage_tab:
         st.subheader("Edit an Existing Trade")
