@@ -314,6 +314,8 @@ elif page == "Trade Journal":
     add_tab, manage_tab, saved_tab = st.tabs(
         ["Add Trade", "Edit/Delete", "Saved Trades"]
     )
+
+    with add_tab:
     st.subheader("Add a New Trade")
 
     with st.form("add_trade_form"):
