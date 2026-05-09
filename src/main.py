@@ -345,9 +345,8 @@ st.subheader("Saved Trades")
 st.dataframe(trades_df)
 
 if not trades_df.empty:
-    with st.expander("Edit a Trade"):
-        edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
-        selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
+    edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
+    selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
 
         selected_trade = trades_df[
             trades_df["trade_id"].astype(int) == selected_edit_id
