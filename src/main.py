@@ -73,35 +73,90 @@ elif page == "Benchmarks":
 elif page == "Data Tables":
     st.write("View raw market data and calculated analysis tables.")
 
-
+# Data loading
 trades_df = load_trades(TRADES_FILE)
 price_df = pd.DataFrame()
 position_df = pd.DataFrame()
 tag_summary_df = pd.DataFrame()
 portfolio_history_df = pd.DataFrame()
 spy_comparison_df = pd.DataFrame()
+market_snapshot_df = pd.DataFrame()
 risk_metrics = {
     "sharpe_ratio": 0,
     "max_drawdown_percent": 0
 }
-market_snapshot_df = pd.DataFrame()
+portfolio_summary = {
+    "total_cost_basis": 0,
+    "total_current_value": 0,
+    "total_unrealized_pl": 0,
+    "total_unrealized_pl_percent": 0
+}
 
+# Shared calculations
 market_snapshot_df = get_market_snapshot()
 
-if trades_df.empty:
-    total_trades = 0
-    unique_tickers = 0
-    total_cost_basis = 0
+total_trades = 0
+unique_tickers = 0
+total_cost_basis = 0
 
-else:
-    trades_df["shares"] = pd.to_numeric(trades_df["shares"], errors="coerce").fillna(0)
-    trades_df["buy_price"] = pd.to_numeric(trades_df["buy_price"], errors="coerce").fillna(0)
+if not trades_df.empty:
+    trades_df["shares"] = pd.to_numeric(
+        trades_df["shares"],
+        errors="coerce"
+    ).fillna(0)
+    trades_df["buy_price"] = pd.to_numeric(
+        trades_df["buy_price"],
+        errors="coerce"
+    ).fillna(0)
 
     total_trades = len(trades_df)
-    unique_tickers = trades_df["ticker"].nunique()
     total_cost_basis = (trades_df["buy_price"] * trades_df["shares"]).sum()
 
+    unique_tickers_list = (
+        trades_df["ticker"]
+        .dropna()
+        .astype(str)
+        .str.strip()
+        .loc[lambda tickers: tickers != ""]
+        .unique()
+        .tolist()
+    )
+    unique_tickers = len(unique_tickers_list)
 
+    if unique_tickers_list:
+        price_df = get_prices_for_tickers(unique_tickers_list)
+        position_df = calculate_position_metrics(trades_df, price_df)
+        portfolio_summary = calculate_portfolio_summary(position_df)
+        tag_summary_df = calculate_tag_summary(position_df)
+
+        earliest_buy_date = pd.to_datetime(
+            trades_df["buy_date"],
+            errors="coerce"
+        ).min()
+
+        if not pd.isna(earliest_buy_date):
+            history_tickers_list = unique_tickers_list.copy()
+
+            if "SPY" not in history_tickers_list:
+                history_tickers_list.append("SPY")
+
+            price_history_df = get_historical_prices(
+                history_tickers_list,
+                earliest_buy_date.strftime("%Y-%m-%d")
+            )
+
+            portfolio_history_df = calculate_portfolio_history(
+                trades_df,
+                price_history_df
+            )
+            spy_comparison_df = calculate_spy_comparison(
+                trades_df,
+                price_history_df
+            )
+            risk_metrics = calculate_risk_metrics(portfolio_history_df)
+
+
+# Page rendering
 if page == "Dashboard":
     col1, col2, col3 = st.columns(3)
 
@@ -132,51 +187,9 @@ if page == "Dashboard":
 
     st.subheader("Portfolio Overview")
 
-    if trades_df.empty:
+    if trades_df.empty or position_df.empty:
         st.info("Add trades to see Portfolio Overview.")
     else:
-        unique_tickers_list = (
-            trades_df["ticker"]
-            .dropna()
-            .astype(str)
-            .str.strip()
-            .loc[lambda tickers: tickers != ""]
-            .unique()
-            .tolist()
-        )
-        price_df = get_prices_for_tickers(unique_tickers_list)
-        
-        position_df = calculate_position_metrics(trades_df, price_df)
-        portfolio_summary = calculate_portfolio_summary(position_df)
-        tag_summary_df = calculate_tag_summary(position_df)
-
-        earliest_buy_date = pd.to_datetime(trades_df["buy_date"], errors="coerce").min()
-
-    if pd.isna(earliest_buy_date):
-        portfolio_history_df = pd.DataFrame()
-    else:
-        history_tickers_list = unique_tickers_list.copy()
-
-        if "SPY" not in history_tickers_list:
-            history_tickers_list.append("SPY")
-
-        price_history_df = get_historical_prices(
-            history_tickers_list,
-            earliest_buy_date.strftime("%Y-%m-%d")
-        )
-
-        portfolio_history_df = calculate_portfolio_history(
-            trades_df,
-            price_history_df
-        )
-
-        spy_comparison_df = calculate_spy_comparison(
-        trades_df,
-        price_history_df
-        )
-
-        risk_metrics = calculate_risk_metrics(portfolio_history_df)
-
         overview_col1, overview_col2, overview_col3, overview_col4, overview_col5 = st.columns(5)
 
         overview_col1.metric(
@@ -205,7 +218,7 @@ if page == "Dashboard":
         )
 
         st.divider()
-        
+
         display_columns = [
             "ticker",
             "shares",
@@ -266,7 +279,7 @@ if page == "Dashboard":
     with st.expander("Raw market data"):
         st.dataframe(price_df, use_container_width=True)
 
-if page == "Benchmarks":
+elif page == "Benchmarks":
     st.subheader("SPY Benchmark Comparison")
 
     if spy_comparison_df.empty:
@@ -294,7 +307,7 @@ if page == "Benchmarks":
                 use_container_width=True
             )
 
-if page == "Trade Journal":
+elif page == "Trade Journal":
     st.subheader("Add a New Trade")
 
     with st.form("add_trade_form"):
@@ -571,3 +584,25 @@ if page == "Trade Journal":
                 save_trades(trades_df, TRADES_FILE)
                 st.warning("Trade deleted.")
                 st.rerun()
+
+elif page == "Data Tables":
+    with st.expander("Trades Table", expanded=True):
+        st.dataframe(trades_df, use_container_width=True)
+
+    with st.expander("Latest Prices Table"):
+        st.dataframe(price_df, use_container_width=True)
+
+    with st.expander("Position Metrics Table"):
+        st.dataframe(position_df, use_container_width=True)
+
+    with st.expander("Tag Summary Table"):
+        st.dataframe(tag_summary_df, use_container_width=True)
+
+    with st.expander("Portfolio History Table"):
+        st.dataframe(portfolio_history_df, use_container_width=True)
+
+    with st.expander("SPY Comparison Table"):
+        st.dataframe(spy_comparison_df, use_container_width=True)
+
+    with st.expander("Market Snapshot Table"):
+        st.dataframe(market_snapshot_df, use_container_width=True)
