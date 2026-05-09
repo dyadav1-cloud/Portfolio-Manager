@@ -300,6 +300,10 @@ def calculate_spy_comparison(trades_df, price_history_df):
 
     return pd.DataFrame(comparison_rows)
 
+def calculate_risk_metrics(portfolio_history_df):
+
+    
+
 
     
 
