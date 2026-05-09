@@ -30,6 +30,18 @@ st.set_page_config(page_title="Portfolio Manager", page_icon="📈", layout="wid
 
 TRADES_FILE = get_data_path("trades.csv")
 
+STRATEGY_OPTIONS = [
+    "Long-term hold",
+    "Momentum play",
+    "Dividend income",
+    "Earnings play",
+    "Swing trade",
+    "Speculative bet",
+    "Hedge",
+    "Index alternative",
+    "Custom"
+]
+
 st.title("Portfolio Manager")
 st.write("Trade journal and performance dashboard.")
 
