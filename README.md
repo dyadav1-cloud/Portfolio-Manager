@@ -53,7 +53,6 @@ The SPY benchmark comparison helps users evaluate whether their individual stock
 - NumPy
 - yfinance
 - Plotly
-- Matplotlib
 
 ## How to Run the App
 
