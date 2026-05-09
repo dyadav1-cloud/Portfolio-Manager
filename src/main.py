@@ -349,6 +349,20 @@ if not trades_df.empty:
         edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
         selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
 
+        selected_trade = trades_df[
+            trades_df["trade_id"].astype(int) == selected_edit_id
+        ].iloc[0]
+
+        with st.form("edit_trade_form"):
+            st.write("Update the trade details and decision notes below.")
+
+            edit_ticker = st.text_input(
+                "Edit Ticker",
+                value=str(selected_trade["ticker"])
+            )
+        
+        edit_col1, edit_col2 = st.columns(2)
+
         
 
 
