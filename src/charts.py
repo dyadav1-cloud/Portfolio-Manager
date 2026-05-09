@@ -394,14 +394,18 @@ def plot_spy_comparison_bar(spy_comparison_df):
     long_df["comparison_type"] = long_df["comparison_type"].map(label_map)
 
     fig = px.bar(
-        long_df,
-        x="ticker",
-        y="profit_loss",
-        color="comparison_type",
-        barmode="group",
-        title="Actual P/L vs. SPY Alternative",
-        text="profit_loss",
-        custom_data=["difference_vs_spy", "comparison_type"]
+    long_df,
+    x="ticker",
+    y="profit_loss",
+    color="comparison_type",
+    color_discrete_map={
+        "Actual Trade": "#2563EB",
+        "SPY Alternative": "#F97316"
+    },
+    barmode="group",
+    title="Actual P/L vs. SPY Alternative",
+    text="profit_loss",
+    custom_data=["difference_vs_spy", "comparison_type"]
     )
 
     fig.update_traces(
