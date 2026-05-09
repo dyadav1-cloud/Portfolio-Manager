@@ -159,10 +159,19 @@ def plot_profit_loss_bar(position_df):
             errors="coerce"
         ).fillna(0)
 
+    pl_df["pl_status"] = pl_df["unrealized_pl"].apply(
+    lambda value: "Gain" if value >= 0 else "Loss"
+)
+
     fig = px.bar(
         pl_df,
         x="ticker",
         y="unrealized_pl",
+        color="pl_status",
+        color_discrete_map={
+            "Gain": POSITIVE_COLOR,
+            "Loss": NEGATIVE_COLOR
+        },
         title="Unrealized Profit/Loss by Ticker",
         text="unrealized_pl",
         custom_data=[
