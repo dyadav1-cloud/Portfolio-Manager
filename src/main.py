@@ -137,6 +137,8 @@ else:
         "Max Drawdown",
         f"{risk_metrics['max_drawdown_percent']:,.2f}%"
     )
+
+    st.divider()
     
     display_columns = [
         "ticker",
