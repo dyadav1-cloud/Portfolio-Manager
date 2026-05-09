@@ -41,6 +41,28 @@ def apply_custom_style():
             border: 1px solid #273244;
         }
 
+        .stButton > button {
+            border-radius: 12px;
+            border: 1px solid #374151;
+            background-color: #111827;
+            color: #f9fafb;
+            padding: 0.55rem 1rem;
+        }
+
+        .stButton > button:hover {
+            border-color: #60a5fa;
+            background-color: #1f2937;
+            color: #ffffff;
+        }
+
+        .stSelectbox div,
+        .stTextInput input,
+        .stNumberInput input,
+        .stTextArea textarea,
+        .stDateInput input {
+            border-radius: 12px;
+        }
+
         
 
         
