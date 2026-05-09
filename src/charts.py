@@ -116,7 +116,7 @@ def plot_allocation_donut(position_df):
         hovertext=allocation_df["hover_text"],
         textposition="inside",
         textinfo="label+percent",
-        hovertemplate="%{hovertext}<extra></extra>"
+        hovertemplate="%{hovertext}<extra></extra>",
         marker=dict(
         line=dict(color="white", width=2)
         )
