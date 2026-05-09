@@ -324,12 +324,17 @@ def plot_portfolio_history_line(portfolio_history_df):
     long_df["metric"] = long_df["metric"].map(label_map)
 
     fig = px.line(
-        long_df,
-        x="date",
-        y="value",
-        color="metric",
-        title="Portfolio Performance Over Time",
-        markers=True
+    long_df,
+    x="date",
+    y="value",
+    color="metric",
+    title="Portfolio Performance Over Time",
+    markers=True,
+    color_discrete_map={
+        "Portfolio Value": "#2563EB",
+        "Cost Basis": "#6B7280",
+        "Unrealized P/L": "#22C55E"
+        }
     )
 
     fig.update_traces(
