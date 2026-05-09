@@ -2,6 +2,18 @@ import pandas as pd
 import plotly.express as px
 import textwrap
 
+CHART_COLORS = [
+    "#2563EB",  # blue
+    "#14B8A6",  # teal
+    "#F97316",  # orange
+    "#8B5CF6",  # purple
+    "#22C55E",  # green
+    "#EF4444",  # red
+]
+
+POSITIVE_COLOR = "#22C55E"
+NEGATIVE_COLOR = "#EF4444"
+NEUTRAL_COLOR = "#2563EB"
 
 def _format_overview(overview, max_chars=320, wrap_width=60):
     """
