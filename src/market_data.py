@@ -135,5 +135,25 @@ def get_historical_prices(tickers, start_date):
     except:
         return pd.DataFrame()
     
+@st.cache_data(ttl=900)
+def get_market_snapshot():
+    """
+    Fetch a simple market snapshot for major U.S. market ETFs.
 
+    SPY = S&P 500
+    QQQ = Nasdaq 100
+    DIA = Dow Jones Industrial Average
+    IWM = Russell 2000
+    """
+
+    market_tickers = {
+        "SPY": "S&P 500",
+        "QQQ": "Nasdaq 100",
+        "DIA": "Dow Jones",
+        "IWM": "Russell 2000"
+    }
+
+    snapshot_rows = []
+
+    
 
