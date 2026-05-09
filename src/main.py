@@ -364,50 +364,50 @@ if not trades_df.empty:
         edit_col1, edit_col2 = st.columns(2)
 
         with edit_col1:
-                edit_shares = st.number_input(
-                    "Edit Shares",
-                    min_value=0.0,
-                    step=1.0,
-                    value=float(selected_trade["shares"])
-                )
+            edit_shares = st.number_input(
+                "Edit Shares",
+                min_value=0.0,
+                step=1.0,
+                value=float(selected_trade["shares"])
+            )
 
-                edit_buy_price = st.number_input(
-                    "Edit Buy Price",
-                    min_value=0.0,
-                    step=0.01,
-                    value=float(selected_trade["buy_price"])
-                )
+            edit_buy_price = st.number_input(
+                "Edit Buy Price",
+                min_value=0.0,
+                step=0.01,
+                value=float(selected_trade["buy_price"])
+            )
 
-                edit_buy_date = st.date_input(
-                    "Edit Buy Date",
-                    value=pd.to_datetime(selected_trade["buy_date"])
-                )
+            edit_buy_date = st.date_input(
+                "Edit Buy Date",
+                value=pd.to_datetime(selected_trade["buy_date"])
+            )
 
         with edit_col2:
-                edit_target_price = st.number_input(
-                    "Edit Target Price",
-                    min_value=0.0,
-                    step=0.01,
-                    value=float(selected_trade["target_price"])
-                    if str(selected_trade["target_price"]).strip() != ""
-                    else 0.0
-                )
+            edit_target_price = st.number_input(
+                "Edit Target Price",
+                min_value=0.0,
+                step=0.01,
+                value=float(selected_trade["target_price"])
+                if str(selected_trade["target_price"]).strip() != ""
+                else 0.0
+            )
 
-                edit_conviction = st.selectbox(
-                    "Edit Conviction Level",
-                    ["Low", "Medium", "High"],
-                    index=["Low", "Medium", "High"].index(selected_trade["conviction"])
-                    if selected_trade["conviction"] in ["Low", "Medium", "High"]
-                    else 1
-                )
+            edit_conviction = st.selectbox(
+                "Edit Conviction Level",
+                ["Low", "Medium", "High"],
+                index=["Low", "Medium", "High"].index(selected_trade["conviction"])
+                if selected_trade["conviction"] in ["Low", "Medium", "High"]
+                else 1
+            )
 
-                edit_status = st.selectbox(
-                    "Edit Status",
-                    ["Open", "Closed"],
-                    index=["Open", "Closed"].index(selected_trade["status"])
-                    if selected_trade["status"] in ["Open", "Closed"]
-                    else 0
-                )
+            edit_status = st.selectbox(
+                "Edit Status",
+                ["Open", "Closed"],
+                index=["Open", "Closed"].index(selected_trade["status"])
+                if selected_trade["status"] in ["Open", "Closed"]
+                else 0
+            )
 
         current_tag = str(selected_trade["tag"])
 
@@ -429,6 +429,13 @@ if not trades_df.empty:
             )
         else:
             edit_tag = edit_selected_strategy
+        
+        edit_thesis = st.text_area(
+                "Edit Investment Thesis",
+                value=str(selected_trade["thesis"])
+            )
+        
+        
 
 
 
