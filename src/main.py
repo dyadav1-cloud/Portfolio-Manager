@@ -18,7 +18,7 @@ from charts import (
     plot_portfolio_history_line,
     plot_spy_comparison_bar
 )
-from style import apply_custom_style
+# from style import apply_custom_style
 
 # This block helps me move my file without having to change names each time.
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
