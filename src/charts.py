@@ -420,10 +420,12 @@ def plot_spy_comparison_bar(spy_comparison_df):
     )
 
     fig.update_layout(
-        xaxis_title="Ticker",
-        yaxis_title="Profit/Loss ($)",
-        legend_title_text="",
-        margin=dict(l=20, r=20, t=60, b=20)
+    template="plotly",
+    xaxis_title="Ticker",
+    yaxis_title="Profit/Loss ($)",
+    legend_title_text="",
+    height=420,
+    margin=dict(l=20, r=20, t=60, b=20)
     )
 
     return fig
