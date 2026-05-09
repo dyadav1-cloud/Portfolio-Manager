@@ -273,9 +273,6 @@ if page == "Dashboard":
             history_fig = plot_portfolio_history_line(portfolio_history_df)
             st.plotly_chart(history_fig, use_container_width=True)
 
-    with st.expander("Raw market data"):
-        st.dataframe(price_df, use_container_width=True)
-
     if not tag_summary_df.empty:
         with st.expander("View tag performance data"):
             st.dataframe(
