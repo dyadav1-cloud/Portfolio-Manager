@@ -109,6 +109,8 @@ else:
     price_history_df
     )
 
+    risk_metrics = calculate_risk_metrics(portfolio_history_df)
+
     summary_col1, summary_col2, summary_col3 = st.columns(3)
 
     summary_col1.metric(
