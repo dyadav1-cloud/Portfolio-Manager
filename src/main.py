@@ -276,6 +276,16 @@ if page == "Dashboard":
     with st.expander("Raw market data"):
         st.dataframe(price_df, use_container_width=True)
 
+    if not tag_summary_df.empty:
+        with st.expander("View tag performance data"):
+            st.dataframe(
+                tag_summary_df,
+                use_container_width=True
+            )
+
+with st.expander("Raw market data"):
+    st.dataframe(price_df, use_container_width=True)
+
 elif page == "Benchmarks":
     st.subheader("SPY Benchmark Comparison")
 
