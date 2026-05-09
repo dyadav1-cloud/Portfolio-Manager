@@ -341,7 +341,24 @@ if not trades_df.empty:
                 value=pd.to_datetime(selected_trade["sell_date"]) if selected_trade["sell_date"] != "" else pd.Timestamp.today()
             )
 
-            edit_tag = st.text_input("Edit Tag", value=str(selected_trade["tag"]))
+            current_tag = str(selected_trade["tag"])
+
+            if current_tag in STRATEGY_OPTIONS:
+                default_strategy_index = STRATEGY_OPTIONS.index(current_tag)
+            else:
+                default_strategy_index = STRATEGY_OPTIONS.index("Custom")
+
+            edit_selected_strategy = st.selectbox(
+                "Edit Strategy Type",
+                STRATEGY_OPTIONS,
+                index=default_strategy_index
+            )
+
+            if edit_selected_strategy == "Custom":
+                edit_tag = st.text_input("Edit Custom Strategy Tag", value=current_tag)
+            else:
+                edit_tag = edit_selected_strategy
+
             edit_thesis = st.text_area("Edit Investment Thesis", value=str(selected_trade["thesis"]))
 
             edit_conviction = st.selectbox(
