@@ -421,6 +421,8 @@ elif page == "Trade Journal":
     st.subheader("Saved Trades")
     st.dataframe(trades_df)
 
+    with manage_tab:
+    st.subheader("Edit an Existing Trade")
     if not trades_df.empty:
         edit_trade_ids = trades_df["trade_id"].astype(int).tolist()
         selected_edit_id = st.selectbox("Select Trade ID to Edit", edit_trade_ids)
