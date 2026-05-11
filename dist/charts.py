@@ -2,6 +2,7 @@ import pandas as pd
 import plotly.express as px
 import textwrap
 
+# A consistent set of colors used across all charts in the app.
 CHART_COLORS = [
     "#2563EB",  # blue
     "#14B8A6",  # teal
@@ -11,13 +12,17 @@ CHART_COLORS = [
     "#EF4444",  # red
 ]
 
+# Green for gains, red for losses — used in P/L bar charts.
 POSITIVE_COLOR = "#22C55E"
 NEGATIVE_COLOR = "#EF4444"
 NEUTRAL_COLOR = "#2563EB"
 
 def _format_overview(overview, max_chars=320, wrap_width=60):
     """
-    Keep hover text readable by trimming long company descriptions.
+    Trim and word-wrap a company description for use in chart hover tooltips.
+
+    Plotly hover text can get very long with full business summaries, so this
+    helper trims to max_chars and wraps lines with <br> tags for readability.
     """
     if not isinstance(overview, str) or not overview.strip():
         return "Company overview unavailable."
@@ -34,7 +39,8 @@ def plot_allocation_donut(position_df):
     """
     Create an interactive donut chart showing portfolio allocation by ticker.
 
-    Allocation is based on current market value.
+    Allocation is based on current market value (shares × latest price).
+    If position_df is empty, returns a placeholder chart so the UI never crashes.
     """
     if position_df.empty:
         fig = px.pie(
@@ -54,6 +60,7 @@ def plot_allocation_donut(position_df):
     if "company_overview" not in chart_df.columns:
         chart_df["company_overview"] = "Company overview unavailable."
 
+    # Group by ticker in case the same stock has multiple trade rows.
     allocation_df = (
         chart_df
         .groupby("ticker", as_index=False)
@@ -84,10 +91,12 @@ def plot_allocation_donut(position_df):
             allocation_df["current_value"] / total_value * 100
         )
 
+    # Trim company overview text so hover tooltips stay readable.
     allocation_df["company_overview"] = allocation_df["company_overview"].apply(
         _format_overview
     )
 
+    # Build a custom hover string combining company info and position metrics.
     allocation_df["hover_text"] = allocation_df.apply(
         lambda row: (
             f"<b>{row['ticker']}</b><br>"
@@ -135,6 +144,9 @@ def plot_allocation_donut(position_df):
 def plot_profit_loss_bar(position_df):
     """
     Create an interactive bar chart showing unrealized profit/loss by ticker.
+
+    Bars are colored green for gains and red for losses.
+    Multiple trade rows for the same ticker are summed together before plotting.
     """
 
     if position_df.empty:
@@ -145,6 +157,7 @@ def plot_profit_loss_bar(position_df):
         )
         return fig
 
+    # Sum P/L across multiple rows of the same ticker.
     pl_df = (
         position_df
         .groupby("ticker", as_index=False)
@@ -163,6 +176,7 @@ def plot_profit_loss_bar(position_df):
             errors="coerce"
         ).fillna(0)
 
+    # Classify each bar as a Gain or Loss so we can map it to green/red.
     pl_df["pl_status"] = pl_df["unrealized_pl"].apply(
     lambda value: "Gain" if value >= 0 else "Loss"
 )
@@ -210,6 +224,9 @@ def plot_profit_loss_bar(position_df):
 def plot_tag_performance_bar(tag_summary_df):
     """
     Create an interactive bar chart showing unrealized profit/loss by trade tag.
+
+    Uses pre-computed tag_summary_df from analytics.calculate_tag_summary.
+    Bars are colored green for gains and red for losses.
     """
     if tag_summary_df.empty:
         fig = px.bar(
@@ -218,7 +235,7 @@ def plot_tag_performance_bar(tag_summary_df):
             title="Performance by Trade Tag"
         )
         return fig
-    
+
     chart_df = tag_summary_df.copy()
 
     numeric_columns = [
@@ -235,6 +252,7 @@ def plot_tag_performance_bar(tag_summary_df):
             errors="coerce"
         ).fillna(0)
 
+    # Classify each bar as Gain or Loss to apply green/red coloring.
     chart_df["pl_status"] = chart_df["total_unrealized_pl"].apply(
     lambda value: "Gain" if value >= 0 else "Loss"
 )
@@ -287,7 +305,10 @@ def plot_tag_performance_bar(tag_summary_df):
 def plot_portfolio_history_line(portfolio_history_df):
     """
     Create an interactive line chart showing portfolio value,
-    cost basis, and unrealized profit/loss over time.
+    cost basis, and unrealized P/L over time.
+
+    The input DataFrame has one row per day. The data is reshaped with .melt()
+    into long format so Plotly can plot all three metrics as separate colored lines.
     """
     if portfolio_history_df.empty:
         fig = px.line(
@@ -296,7 +317,7 @@ def plot_portfolio_history_line(portfolio_history_df):
             title="Portfolio Performance Over Time"
         )
         return fig
-    
+
     chart_df = portfolio_history_df.copy()
 
     chart_df["date"] = pd.to_datetime(
@@ -304,6 +325,8 @@ def plot_portfolio_history_line(portfolio_history_df):
         errors="coerce"
     )
 
+    # Reshape from wide format (one column per metric) to long format
+    # (one row per metric per date) so px.line can draw one line per metric.
     long_df = chart_df.melt(
         id_vars="date",
         value_vars=[
@@ -315,6 +338,7 @@ def plot_portfolio_history_line(portfolio_history_df):
         value_name="value"
     )
 
+    # Replace internal column names with display-friendly labels for the legend.
     label_map = {
         "portfolio_value": "Portfolio Value",
         "cost_basis": "Cost Basis",
@@ -365,7 +389,10 @@ def plot_portfolio_history_line(portfolio_history_df):
 def plot_spy_comparison_bar(spy_comparison_df):
     """
     Create an interactive grouped bar chart comparing actual trade P/L
-    against the equivalent SPY investment P/L.
+    against the equivalent SPY investment P/L for each trade.
+
+    The data is reshaped with .melt() so that each ticker gets two side-by-side
+    bars: one for the actual trade return and one for the SPY alternative.
     """
     if spy_comparison_df.empty:
         fig = px.bar(
@@ -391,6 +418,8 @@ def plot_spy_comparison_bar(spy_comparison_df):
             errors="coerce"
         ).fillna(0)
 
+    # Reshape so each trade has two rows: one for actual_pl and one for spy_pl.
+    # This lets px.bar draw them as grouped bars side by side.
     long_df = chart_df.melt(
         id_vars=["ticker", "difference_vs_spy"],
         value_vars=["actual_pl", "spy_pl"],
@@ -398,6 +427,7 @@ def plot_spy_comparison_bar(spy_comparison_df):
         value_name="profit_loss"
     )
 
+    # Replace internal column names with display-friendly labels for the legend.
     label_map = {
         "actual_pl": "Actual Trade",
         "spy_pl": "SPY Alternative"
@@ -441,4 +471,3 @@ def plot_spy_comparison_bar(spy_comparison_df):
     )
 
     return fig
-

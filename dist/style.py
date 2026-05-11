@@ -3,8 +3,11 @@ import streamlit as st
 
 def apply_custom_style():
     """
-    Apply light visual polish without overriding Streamlit's light/dark theme.
-    This keeps the app compatible with both themes.
+    Apply light CSS polish to the app without overriding Streamlit's built-in themes.
+
+    All colors here use rgba() with low opacity so the styles work correctly in
+    both Streamlit light mode and dark mode. No hardcoded background or text colors
+    are set — this keeps the theme switcher working as expected.
     """
     st.markdown(
         """

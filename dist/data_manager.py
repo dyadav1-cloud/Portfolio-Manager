@@ -1,6 +1,8 @@
 import pandas as pd
 import os
 
+# The canonical list of column names for the trades CSV.
+# All functions use this list to ensure the DataFrame always has consistent columns.
 TRADE_COLUMNS = [
     "trade_id",
     "ticker",
@@ -19,6 +21,9 @@ TRADE_COLUMNS = [
 def load_trades(file_path):
     """
     Load trades from a CSV file and return them as a pandas DataFrame.
+
+    If the file doesn't exist or is empty, returns an empty DataFrame with
+    the correct columns so the rest of the app doesn't break on the first run.
     """
     if not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
         return pd.DataFrame(columns=TRADE_COLUMNS)
@@ -26,30 +31,36 @@ def load_trades(file_path):
 
     trades_df = pd.read_csv(file_path)
 
+    # If the CSV was saved by an older version of the app that didn't have all
+    # columns, add any missing ones with empty values so nothing errors out.
     for columns in TRADE_COLUMNS:
         if columns not in trades_df.columns:
             trades_df[columns] = ""
-        
+
     return trades_df[TRADE_COLUMNS]
 
 def save_trades(trades_df, file_path):
     """
-    Saves the trades DataFrame to a CSV file.
+    Save the trades DataFrame to a CSV file.
+
+    index=False prevents pandas from writing the row numbers as a column,
+    which would create an unwanted extra column when the file is loaded back.
     """
     trades_df.to_csv(file_path, index=False)
 
 def get_next_trade_id(trades_df):
     """
-    Create the next trade ID.
+    Return the next available trade ID.
 
     If there are no trades yet, the first trade ID will be 1.
     Otherwise, it will be one more than the largest existing trade ID.
+    This avoids reusing IDs even after trades are deleted.
     """
     if trades_df.empty:
         return 1
     else:
         return trades_df["trade_id"].max() + 1
-    
+
 
 def add_trade(
         trades_df,
@@ -66,7 +77,10 @@ def add_trade(
         status
 ):
     """
-    Add a new trade to the trades DataFrame.
+    Add a new trade row to the trades DataFrame and return the updated DataFrame.
+
+    The original DataFrame is not modified in place — pd.concat creates a new one.
+    The trade ID is assigned automatically by get_next_trade_id.
     """
     new_trade = {
         "trade_id": get_next_trade_id(trades_df),
@@ -91,7 +105,10 @@ def add_trade(
 
 def delete_trade(trades_df, trade_id):
     """
-    Delete a trade from the trades DataFrame by its trade ID.
+    Remove a trade from the DataFrame by its trade ID and return the updated DataFrame.
+
+    reset_index(drop=True) re-numbers the DataFrame index from 0 so there are
+    no gaps left after the deletion.
     """
     updated_trades_df = trades_df[trades_df["trade_id"] != trade_id]
 
@@ -113,13 +130,16 @@ def edit_trade(
         status
 ):
     """
-    Edit an existing trade using its trade ID.
+    Update an existing trade in the DataFrame using its trade ID.
+
+    Finds the row with the matching trade_id and overwrites each field.
+    If no matching trade is found, the DataFrame is returned unchanged.
     """
     trade_index = trades_df[trades_df["trade_id"] == trade_id].index
 
     if len(trade_index) == 0:
         return trades_df
-    
+
     row_index = trade_index[0]
 
     trades_df.loc[row_index, "ticker"] = ticker.upper().strip()

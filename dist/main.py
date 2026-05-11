@@ -1,3 +1,9 @@
+# Entry point for the Streamlit app. Run with: streamlit run dist/main.py
+
+# --- Imports ---
+# Third-party and local module imports. Each local module handles one responsibility:
+# data_manager → CSV read/write, market_data → yfinance API calls,
+# analytics → metric calculations, charts → Plotly figures, style → CSS tweaks.
 import streamlit as st
 import os
 import pandas as pd
@@ -20,6 +26,7 @@ from charts import (
 )
 from style import apply_custom_style
 
+# --- File Path Setup ---
 # This block helps me move my file without having to change names each time.
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -27,6 +34,8 @@ def get_data_path(filename: str) -> str:
     '''Returns the path to an asset file, given its filename.'''
     return os.path.join(APP_PATH, "data", filename)
 
+# --- Page Configuration ---
+# Must be called before any other Streamlit command on a given page.
 st.set_page_config(
     page_title="Portfolio Manager",
     page_icon="📈",
@@ -38,6 +47,8 @@ apply_custom_style()
 
 TRADES_FILE = get_data_path("trades.csv")
 
+# The list of valid strategy tag options shown in the trade form.
+# "Custom" is the catch-all that lets users type their own tag.
 STRATEGY_OPTIONS = [
     "Long-term hold",
     "Momentum play",
@@ -50,6 +61,8 @@ STRATEGY_OPTIONS = [
     "Custom"
 ]
 
+# --- Sidebar Navigation ---
+# The sidebar radio widget lets the user switch between the four pages.
 st.sidebar.title("Portfolio Manager")
 
 page = st.sidebar.radio(
@@ -76,7 +89,9 @@ elif page == "Benchmarks":
 elif page == "Data Tables":
     st.write("View raw market data and calculated analysis tables.")
 
-# Data loading
+# --- Data Loading ---
+# Load trades from the CSV on every page run. All downstream calculations depend on this.
+# If no CSV exists yet, load_trades returns an empty DataFrame with the correct columns.
 trades_df = load_trades(TRADES_FILE)
 price_df = pd.DataFrame()
 position_df = pd.DataFrame()
@@ -95,7 +110,10 @@ portfolio_summary = {
     "total_unrealized_pl_percent": 0
 }
 
-# Shared calculations
+# --- Shared Calculations ---
+# All metrics and chart data are calculated here — before any page is rendered.
+# This way every page can use the same computed values without repeating the work.
+# It also means yfinance is only called once per page load, not once per chart.
 market_snapshot_df = get_market_snapshot()
 
 total_trades = 0
@@ -159,14 +177,18 @@ if not trades_df.empty:
             risk_metrics = calculate_risk_metrics(portfolio_history_df)
 
 
-# Page rendering
+# --- Page Rendering ---
+# Only the selected page's block runs. Streamlit re-runs the whole script on each
+# interaction, so the correct if/elif branch executes based on the sidebar selection.
 if page == "Dashboard":
+    # Top-level stats row
     col1, col2, col3 = st.columns(3)
 
     col1.metric("Total Trades", total_trades)
     col2.metric("Unique Tickers", unique_tickers)
     col3.metric("Total Cost Basis", f"${total_cost_basis:,.2f}")
 
+    # Market Snapshot section
     st.subheader("Market Snapshot")
 
     if market_snapshot_df.empty:
@@ -188,6 +210,7 @@ if page == "Dashboard":
             use_container_width=True
         )
 
+    # Portfolio Overview section: metrics + position table
     st.subheader("Portfolio Overview")
 
     if trades_df.empty or position_df.empty:
@@ -222,6 +245,7 @@ if page == "Dashboard":
 
         st.divider()
 
+        # Only show the columns that make sense to display in this view.
         display_columns = [
             "ticker",
             "shares",
@@ -241,6 +265,7 @@ if page == "Dashboard":
             use_container_width=True
         )
 
+    # Charts row: allocation donut + profit/loss bar
     chart_col1, chart_col2 = st.columns(2)
 
     with chart_col1:
@@ -253,6 +278,7 @@ if page == "Dashboard":
         pl_fig = plot_profit_loss_bar(position_df)
         st.plotly_chart(pl_fig, use_container_width=True)
 
+    # Second charts row: tag performance + portfolio history
     tag_col, history_col = st.columns(2)
 
     with tag_col:
@@ -284,6 +310,7 @@ if page == "Dashboard":
         st.dataframe(price_df, use_container_width=True)
 
 elif page == "Benchmarks":
+    # --- Benchmarks Page ---
     st.subheader("SPY Benchmark Comparison")
 
     if spy_comparison_df.empty:
@@ -312,6 +339,8 @@ elif page == "Benchmarks":
             )
 
 elif page == "Trade Journal":
+    # --- Trade Journal Page ---
+    # Three tabs: Add a new trade, Edit/Delete an existing one, View all saved trades.
     add_tab, manage_tab, saved_tab = st.tabs(
         ["Add Trade", "Edit/Delete", "Saved Trades"]
     )
@@ -361,6 +390,7 @@ elif page == "Trade Journal":
                 placeholder="What would make you sell or close this trade?"
             )
 
+            # Combine the three journal fields into one "thesis" string stored in the CSV.
             thesis = (
                 f"Reason for Entry: {entry_reason}\n"
                 f"Main Risk: {main_risk}\n"
@@ -415,10 +445,12 @@ elif page == "Trade Journal":
                         status=status
                     )
 
+                    # Write the updated DataFrame to CSV so the trade persists across reloads.
                     save_trades(trades_df, TRADES_FILE)
                     st.success("Trade added successfully!")
+                    # Rerun to reload trades_df from the CSV and refresh all calculations.
                     st.rerun()
-    
+
     with saved_tab:
         st.subheader("Saved Trades")
         if trades_df.empty:
@@ -582,6 +614,7 @@ elif page == "Trade Journal":
                             status=edit_status
                         )
 
+                        # Write changes to CSV and reload so the updated data is reflected everywhere.
                         save_trades(trades_df, TRADES_FILE)
                         st.success("Trade updated successfully!")
                         st.rerun()
@@ -597,11 +630,15 @@ elif page == "Trade Journal":
 
                 if st.button("Delete Selected Trade"):
                     trades_df = delete_trade(trades_df, selected_trade_id)
+                    # Save the updated DataFrame to CSV after the deletion.
                     save_trades(trades_df, TRADES_FILE)
                     st.warning("Trade deleted.")
                     st.rerun()
 
 elif page == "Data Tables":
+    # --- Data Tables Page ---
+    # Each expander shows a raw DataFrame used in the app — useful for debugging
+    # or reviewing the exact numbers behind each chart and metric.
     with st.expander("Trades Table", expanded=True):
         st.dataframe(trades_df, use_container_width=True)
 
